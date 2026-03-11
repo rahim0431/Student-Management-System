@@ -1,0 +1,16 @@
+# Dependencies
+/vendor/
+**/vendor/
+/node_modules/
+**/node_modules/
+
+# Environment and Config
+.env
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+.idea/
