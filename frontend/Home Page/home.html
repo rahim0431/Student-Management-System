@@ -3,397 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sage Campus · Home</title>
+    <title>Learnova · Home</title>
     <!-- Inter font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-deep: #2C666E;
-            --primary-light: #F0EDEE;
-            --accent-sage: #3D7B84;
-            --text-dark: #1F2C30;
-            --text-muted: #4F5E63;
-            --border-light: #D6D2D4;
-            --card-bg: #FFFFFF;
-            --shadow-sm: 0 8px 20px rgba(44, 102, 110, 0.08);
-            --shadow-md: 0 12px 30px rgba(44, 102, 110, 0.15);
-            --radius-card: 32px;
-            --radius-button: 50px;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #F8F9FA;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 0;
-            color: var(--text-dark);
-            overflow-x: hidden;
-        }
-
-        .container {
-            width: 100%;
-            display: contents;
-        }
-
-        .home-card {
-            background: transparent;
-            border-radius: 0;
-            box-shadow: none;
-            border: none;
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: visible;
-        }
-
-        /* HEADER - LARGER */
-        .home-header {
-            background: white;
-            border-bottom: 1px solid #EAEAEA;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        /* HERO SECTION */
-        .hero-section {
-            background: linear-gradient(135deg, var(--primary-deep) 0%, #1A444A 100%);
-            color: white;
-            padding: 100px 20px 80px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero-bg-pattern {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            opacity: 0.1;
-            background-image: radial-gradient(circle at 20% 20%, white 1px, transparent 1px), radial-gradient(circle at 80% 80%, white 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
-
-        .logo svg {
-            width: 40px;
-            height: 40px;
-        }
-
-        .logo h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            color: var(--primary-deep);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-deep);
-        }
-
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            letter-spacing: -0.03em;
-            position: relative;
-            z-index: 1;
-        }
-
-        .tagline {
-            font-size: 1.25rem;
-            font-weight: 400;
-            opacity: 0.95;
-            color: #F0EDEE;
-            max-width: 700px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-            line-height: 1.6;
-        }
-
-        /* MAIN CONTENT - BIGGER */
-        .home-content {
-            padding: 80px 20px;
-            background: #F8F9FA;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: var(--primary-deep);
-            margin-bottom: 8px;
-        }
-
-        .section-title p {
-            color: var(--text-muted);
-            font-size: 1.3rem;
-        }
-
-        /* ROLE CARDS - BIGGER */
-        .role-grid {
-            display: flex;
-            gap: 30px;
-            justify-content: center;
-            align-items: stretch;
-            margin: 0 auto;
-            width: 100%;
-            max-width: 1200px;
-            flex-wrap: wrap;
-        }
-
-        .role-card {
-            flex: 1;
-            min-width: 280px;
-            max-width: 350px;
-            background: #FCFAFB;
-            border-radius: 32px;
-            padding: 35px 25px 35px;
-            text-align: center;
-            transition: all 0.25s ease;
-            border: 1px solid rgba(0,0,0,0.05);
-            box-shadow: var(--shadow-sm);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .role-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 35px -10px rgba(44, 102, 110, 0.25);
-            background: white;
-        }
-
-        .icon-circle {
-            width: 80px;
-            height: 80px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        .icon-circle svg {
-            width: 40px;
-            height: 40px;
-        }
-
-        .role-card h3 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-deep);
-            margin-bottom: 12px;
-        }
-
-        .role-desc {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 25px;
-            padding: 0 8px;
-            flex-grow: 1;
-        }
-
-        .role-btn {
-            background: transparent;
-            border: 2.5px solid var(--primary-deep);
-            color: var(--primary-deep);
-            padding: 12px 24px;
-            border-radius: var(--radius-button);
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 100%;
-            max-width: 180px;
-            margin-top: auto;
-        }
-
-        .role-btn:hover {
-            background: var(--primary-deep);
-            color: white;
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(44, 102, 110, 0.3);
-        }
-
-        /* STUDENT OPTIONS - OVERLAY FIX */
-        .student-options {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.98);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 10;
-            transform: translateY(10px);
-        }
-
-        .student-options.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .student-options h3 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-        }
-
-        .option-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            justify-content: center;
-            width: 100%;
-            max-width: 200px;
-        }
-
-        .option-btn {
-            padding: 12px 20px;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.15s;
-            width: 100%;
-            text-align: center;
-        }
-
-        .option-btn.primary {
-            background: var(--primary-deep);
-            color: white;
-            border: 2px solid var(--primary-deep);
-        }
-
-        .option-btn.outline {
-            background: transparent;
-            color: var(--primary-deep);
-            border: 2px solid var(--primary-deep);
-        }
-
-        .option-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 12px rgba(44, 102, 110, 0.2);
-        }
-
-        .close-options {
-            margin-top: 20px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            cursor: pointer;
-            padding: 5px 10px;
-        }
-        
-        .close-options:hover {
-            color: var(--primary-deep);
-        }
-
-        /* FOOTER - BIGGER */
-        .home-footer {
-            background: white;
-            padding: 40px 20px;
-            text-align: center;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-light);
-            font-size: 1rem;
-            flex-shrink: 0;
-            margin-top: auto;
-        }
-
-        .home-footer a {
-            color: var(--primary-deep);
-            font-weight: 600;
-            text-decoration: none;
-            font-size: 1rem;
-            margin: 0 5px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="home.css">
 </head>
 <body>
     <div class="container">
         <div class="home-card">
             <div class="home-header">
                 <a href="#" class="logo">
-                    <svg width="70" height="70" viewBox="0 0 70 70" fill="none">
-                        <rect width="70" height="70" rx="18" fill="#F0EDEE" fill-opacity="0.15"/>
-                        <rect x="9" y="9" width="52" height="52" rx="14" fill="white"/>
-                        <path d="M35 22L22 28.5V37.5C22 44.6 27.8 50.5 35 50.5C42.2 50.5 48 44.6 48 37.5V28.5L35 22Z" fill="#2C666E" stroke="#1A444A" stroke-width="2.2" stroke-linejoin="round"/>
-                        <circle cx="35" cy="37" r="5" fill="#F0EDEE"/>
-                    </svg>
-                    <h1>Sage Campus</h1>
+                    <img src="icons/graduate.gif" alt="Learnova Logo">
+                    <h1>Learnova</h1>
                 </a>
-                <nav class="nav-links">
-                    <a href="#">About</a>
-                    <a href="#">Features</a>
-                    <a href="#">Contact</a>
-                </nav>
+                <div class="nav-group">
+                    <nav class="nav-links">
+                        <a href="#about">About</a>
+                        <a href="#features">Features</a>
+                        <a href="#contact">Contact</a>
+                    </nav>
+                    <a href="#signup" class="nav-cta">Sign In</a>
+                </div>
             </div>
 
-            <div class="hero-section">
-                <div class="hero-bg-pattern"></div>
-                <h1 class="hero-title">Manage your campus<br>with confidence.</h1>
-                <p class="tagline">A unified platform for administrators, teachers, and students.<br>Streamline your educational journey today.</p>
+            <section class="hero-section">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Manage your campus <span style="color: #2c666e;"> with Confidence</span></h1>
+                    <p>A unified platform for administrators, teachers, and students.</p>
+                    <p class="subtitle">Streamline your educational journey today.</p>
+                    <a href="#signup" class="hero-btn">Get Started for Free</a>
+                </div>
+                <div class="hero-scene" aria-hidden="true">
+                    <div class="sms-board">
+                        <div class="sms-topbar">
+                            <span class="sms-dot"></span>
+                            <span class="sms-title"></span>
+                            <span class="sms-action"></span>
+                        </div>
+                        <div class="sms-content">
+                            <div class="sms-student-list">
+                                <div class="sms-student">
+                                    <span class="sms-avatar"></span>
+                                    <span class="sms-line"></span>
+                                    <span class="sms-chip"></span>
+                                </div>
+                                <div class="sms-student">
+                                    <span class="sms-avatar"></span>
+                                    <span class="sms-line"></span>
+                                    <span class="sms-chip"></span>
+                                </div>
+                                <div class="sms-student">
+                                    <span class="sms-avatar"></span>
+                                    <span class="sms-line"></span>
+                                    <span class="sms-chip"></span>
+                                </div>
+                            </div>
+                            <div class="sms-metrics">
+                                <div class="sms-ring"></div>
+                                <div class="sms-bars">
+                                    <span></span><span></span><span></span><span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sms-calendar">
+                        <div class="sms-calendar-head"></div>
+                        <div class="sms-calendar-grid">
+                            <span></span><span class="active"></span><span></span><span></span>
+                            <span></span><span></span><span></span><span class="active"></span>
+                            <span></span><span></span><span></span><span></span>
+                        </div>
+                    </div>
+                    <div class="sms-idcard">
+                        <div class="sms-id-avatar"></div>
+                        <div class="sms-id-lines">
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            <div class="home-content">
+            <div class="home-content" id="signup">
                 <div class="section-title">
                     <h2>Select Your Portal</h2>
                     <p>Choose your role to access the dashboard</p>
@@ -403,11 +98,7 @@
                     <!-- ADMIN -->
                     <div class="role-card" id="adminCard">
                         <div class="icon-circle">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#2C666E" stroke-width="1.8">
-                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                <circle cx="18" cy="8" r="2.5" fill="#2C666E" stroke="none"/>
-                                <path d="M22 12v2" stroke="#2C666E"/>
-                            </svg>
+                            <img src="icons/personnel.gif" alt="Admin Logo">
                         </div>
                         <h3>Admin</h3>
                         <p class="role-desc">Manage system & users</p>
@@ -417,11 +108,7 @@
                     <!-- TEACHER -->
                     <div class="role-card" id="teacherCard">
                         <div class="icon-circle">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#2C666E" stroke-width="1.8">
-                                <path d="M4 19.5L12 14l8 5.5M12 4v10" stroke="#2C666E"/>
-                                <rect x="4" y="4" width="16" height="12" rx="2" stroke="#2C666E"/>
-                                <circle cx="12" cy="10" r="2" fill="#2C666E" stroke="none"/>
-                            </svg>
+                           <img src="icons/tutor.gif" alt="Tutor Logo">
                         </div>
                         <h3>Teacher</h3>
                         <p class="role-desc">Classes & grades</p>
@@ -431,11 +118,7 @@
                     <!-- STUDENT -->
                     <div class="role-card" id="studentCard">
                         <div class="icon-circle">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#2C666E" stroke-width="1.8">
-                                <path d="M12 4L4 8v6l8 4 8-4V8l-8-4z" stroke="#2C666E"/>
-                                <path d="M4 12v4l8 4 8-4v-4" stroke="#2C666E"/>
-                                <circle cx="12" cy="10" r="2" fill="#2C666E" stroke="none"/>
-                            </svg>
+                            <img src="icons/graduation.gif" alt="Learnova Logo">
                         </div>
                         <h3>Student</h3>
                         <p class="role-desc">Grades & enrollment</p>
@@ -453,76 +136,116 @@
                 </div>
             </div>
 
+            <section id="features" class="features-section">
+                <div class="section-title">
+                    <h2>Built for modern campuses</h2>
+                    <p>Tools that keep every department aligned</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon comm">
+                            <svg viewBox="0 0 64 64" aria-hidden="true">
+                                <rect x="6" y="10" width="36" height="26" rx="8"></rect>
+                                <path d="M16 36 L12 48 L26 38"></path>
+                                <rect x="22" y="24" width="36" height="26" rx="8"></rect>
+                                <path d="M42 50 L52 60 L52 48"></path>
+                            </svg>
+                        </div>
+                        <h3>Simplified Communication</h3>
+                        <p>Message students, parents, and staff with clarity and quick approvals.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon finance">
+                            <svg viewBox="0 0 64 64" aria-hidden="true">
+                                <rect x="8" y="14" width="48" height="32" rx="8"></rect>
+                                <circle cx="24" cy="30" r="8"></circle>
+                                <path d="M40 22 L52 22"></path>
+                                <path d="M40 30 L52 30"></path>
+                                <path d="M40 38 L52 38"></path>
+                            </svg>
+                        </div>
+                        <h3>Fees & Finance Tracking</h3>
+                        <p>Track invoices, scholarships, and payment status across every campus.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon plan">
+                            <svg viewBox="0 0 64 64" aria-hidden="true">
+                                <rect x="10" y="10" width="44" height="44" rx="10"></rect>
+                                <path d="M22 24 L42 24"></path>
+                                <path d="M22 32 L42 32"></path>
+                                <path d="M22 40 L36 40"></path>
+                                <circle cx="42" cy="40" r="6"></circle>
+                            </svg>
+                        </div>
+                        <h3>Academic Planning</h3>
+                        <p>Plan timetables, credits, and counselor workflows in one view.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about" class="about-section">
+                <div class="about-grid">
+                    <div class="about-text">
+                        <h2>About Learnova</h2>
+                        <p>Learnova unifies admissions, attendance, grading, and finance into a single, secure student management hub. Built for administrators and educators who need faster decisions without compromising data integrity.</p>
+                        <div class="about-points">
+                            <span>Role-based access for every department</span>
+                            <span>Unified student records across campuses</span>
+                            <span>Automated alerts and compliance logs</span>
+                        </div>
+                    </div>
+                    <div class="about-stats">
+                        <div class="stat-card">
+                            <h3>45%</h3>
+                            <p>Faster reporting cycles</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>3x</h3>
+                            <p>Less manual data entry</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>24/7</h3>
+                            <p>Access for staff and students</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" class="contact-section">
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <h2>Ready to experience Learnova?</h2>
+                        <p>Tell us about your campus and we will reach out with a tailored demo.</p>
+                    </div>
+                    <form class="contact-form">
+                        <div class="form-row">
+                            <input type="text" placeholder="Full Name" aria-label="Full Name" required>
+                            <input type="email" placeholder="Work Email" aria-label="Work Email" required>
+                        </div>
+                        <div class="form-row">
+                            <input type="text" placeholder="Campus Size" aria-label="Campus Size">
+                            <select aria-label="Primary Goal">
+                                <option>Primary Goal</option>
+                                <option>Admissions & onboarding</option>
+                                <option>Attendance & academics</option>
+                                <option>Fees & finance</option>
+                                <option>All-in-one management</option>
+                            </select>
+                        </div>
+                        <textarea rows="3" placeholder="Tell us what you need help with" aria-label="Message"></textarea>
+                        <button type="submit" class="contact-btn">Schedule My Demo</button>
+                    </form>
+                </div>
+            </section>
+
             <div class="home-footer">
                 <div style="margin-bottom: 15px;">
                     <a href="#">Privacy Policy</a> · <a href="#">Terms of Service</a> · <a href="#">Support</a>
                 </div>
-                <span style="opacity:0.6;">© 2025 Sage Campus. All rights reserved.</span>
+                <span style="opacity:0.6;">© 2026 Learnova. All rights reserved.</span>
             </div>
         </div>
     </div>
-
-    <script>
-        (function() {
-            const adminBtn = document.getElementById('adminBtn');
-            const teacherBtn = document.getElementById('teacherBtn');
-            const studentBtn = document.getElementById('studentBtn');
-            const studentOptions = document.getElementById('studentOptions');
-            const closeOptions = document.getElementById('closeStudentOptions');
-            const studentLogin = document.getElementById('studentLoginOption');
-            const studentRegister = document.getElementById('studentRegisterOption');
-            
-            adminBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                window.location.href = '../Admin/admin-login.html';
-            });
-
-            teacherBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                window.location.href = 'teacherlogin.html';
-            });
-
-            studentBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                studentOptions.classList.toggle('show');
-            });
-
-            closeOptions.addEventListener('click', (e) => {
-                e.stopPropagation();
-                studentOptions.classList.remove('show');
-            });
-
-            studentLogin.addEventListener('click', (e) => {
-                e.stopPropagation();
-                window.location.href = 'login.html';
-            });
-
-            studentRegister.addEventListener('click', (e) => {
-                e.stopPropagation();
-                window.location.href = 'registration.html';
-            });
-
-            document.addEventListener('click', function(event) {
-                const studentCard = document.getElementById('studentCard');
-                if (!studentCard.contains(event.target) && studentOptions.classList.contains('show')) {
-                    studentOptions.classList.remove('show');
-                }
-            });
-
-            studentOptions.addEventListener('click', (e) => e.stopPropagation());
-
-            // Card clicks for admin/teacher
-            document.getElementById('adminCard').addEventListener('click', (e) => {
-                if (!e.target.closest('button')) {
-                    window.location.href = '../Admin/admin-login.html';
-                }
-            });
-            document.getElementById('teacherCard').addEventListener('click', (e) => {
-                if (!e.target.closest('button')) {
-                    window.location.href = 'teacherlogin.html';
-                }
-            });
-        })();
-    </script>
+    <script src="home.js"></script>
 </body>
 </html>

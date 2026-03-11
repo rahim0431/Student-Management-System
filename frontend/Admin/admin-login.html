@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login · Sage Campus</title>
+    <title>Admin Login · Learnova</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
@@ -23,18 +23,25 @@
         }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F8F9FA;
+            background-color: #eff3f5;
+            background-image: url("../low-poly-grid-haikei.svg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
         }
+        *, *::before, *::after { box-sizing: border-box; }
         .login-container {
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
             padding: 50px;
             border-radius: var(--radius-card);
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 15px 35px rgba(44, 102, 110, 0.15);
             width: 100%;
             max-width: 450px;
             text-align: center;
@@ -43,12 +50,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            flex-direction: column;
+            gap: 10px;
             text-decoration: none;
             margin-bottom: 30px;
         }
-        .logo svg { width: 40px; height: 40px; }
-        .logo h1 { font-size: 1.8rem; color: var(--primary-deep); }
+        .logo img { height: 84px; width: 84px; object-fit: contain; }
+        .logo h1 { font-size: 2.4rem; color: var(--primary-deep); margin: 0; font-weight: 700; letter-spacing: -0.5px; }
         h2 {
             font-size: 1.5rem;
             color: var(--text-dark);
@@ -70,7 +78,8 @@
         }
         .login-form input {
             width: 100%;
-            padding: 14px 18px;
+            height: 50px;
+            padding: 0 18px;
             border-radius: 12px;
             border: 1px solid var(--border-light);
             font-size: 1rem;
@@ -106,8 +115,8 @@
 <body>
     <div class="login-container">
         <a href="./Home Page/home.html" class="logo">
-            <svg width="70" height="70" viewBox="0 0 70 70" fill="none"><rect width="70" height="70" rx="18" fill="#F0EDEE" fill-opacity="0.15"/><rect x="9" y="9" width="52" height="52" rx="14" fill="white"/><path d="M35 22L22 28.5V37.5C22 44.6 27.8 50.5 35 50.5C42.2 50.5 48 44.6 48 37.5V28.5L35 22Z" fill="#2C666E" stroke="#1A444A" stroke-width="2.2" stroke-linejoin="round"/><circle cx="35" cy="37" r="5" fill="#F0EDEE"/></svg>
-            <h1>Sage Campus</h1>
+            <img src="icons/graduate.gif" alt="Learnova Logo">
+            <h1>Learnova</h1>
         </a>
         <h2>Admin Portal</h2>
         <p>Please sign in to continue</p>
