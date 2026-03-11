@@ -8,6 +8,9 @@ const API_URL = 'http://127.0.0.1:8000/api';
     let currentSection = "dashboard";
     let latestStudents = [];
     let latestTeachers = [];
+    let currentStudentPage = 1;
+    let currentTeacherPage = 1;
+    const ITEMS_PER_PAGE = 6;
 
     document.addEventListener("DOMContentLoaded", function(){
         const role = localStorage.getItem("role");
@@ -51,6 +54,7 @@ const API_URL = 'http://127.0.0.1:8000/api';
                     s.user.email.toLowerCase().includes(term) ||
                     (s.course && s.course.toLowerCase().includes(term))
                 );
+                currentStudentPage = 1;
                 renderStudentsTable(filtered);
             });
         }
@@ -64,6 +68,7 @@ const API_URL = 'http://127.0.0.1:8000/api';
                     t.user.email.toLowerCase().includes(term) ||
                     (t.department && t.department.toLowerCase().includes(term))
                 );
+                currentTeacherPage = 1;
                 renderTeachersTable(filtered);
             });
         }
@@ -198,6 +203,7 @@ const API_URL = 'http://127.0.0.1:8000/api';
         }
         const data = await res.json();
         latestStudents = Array.isArray(data) ? data : [];
+        currentStudentPage = 1;
         renderMiniUsers();
         renderGrowthChart();
         renderStudentsTable(latestStudents);
@@ -207,8 +213,17 @@ const API_URL = 'http://127.0.0.1:8000/api';
         const tbody = document.getElementById('studentsTableBody');
         if (!tbody) return;
         tbody.innerHTML = '';
+
+        // Pagination Logic
+        const totalItems = students.length;
+        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+        if (currentStudentPage < 1) currentStudentPage = 1;
+        if (currentStudentPage > totalPages) currentStudentPage = totalPages;
         
-        students.forEach(student => {
+        const start = (currentStudentPage - 1) * ITEMS_PER_PAGE;
+        const paginatedStudents = students.slice(start, start + ITEMS_PER_PAGE);
+        
+        paginatedStudents.forEach(student => {
             // Note: student.user contains the name/email from Users table
             const row = `<tr>
                 <td>${student.user.first_name} ${student.user.last_name}</td>
@@ -224,6 +239,8 @@ const API_URL = 'http://127.0.0.1:8000/api';
             </tr>`;
             tbody.innerHTML += row;
         });
+
+        renderPaginationControls('student', totalItems, totalPages, currentStudentPage);
     }
 
     async function fetchTeachers() {
@@ -236,6 +253,7 @@ const API_URL = 'http://127.0.0.1:8000/api';
         }
         const data = await res.json();
         latestTeachers = Array.isArray(data) ? data : [];
+        currentTeacherPage = 1;
         renderMiniUsers();
         renderGrowthChart();
         renderTeachersTable(latestTeachers);
@@ -246,7 +264,16 @@ const API_URL = 'http://127.0.0.1:8000/api';
         if (!tbody) return;
         tbody.innerHTML = '';
         
-        teachers.forEach(teacher => {
+        // Pagination Logic
+        const totalItems = teachers.length;
+        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+        if (currentTeacherPage < 1) currentTeacherPage = 1;
+        if (currentTeacherPage > totalPages) currentTeacherPage = totalPages;
+
+        const start = (currentTeacherPage - 1) * ITEMS_PER_PAGE;
+        const paginatedTeachers = teachers.slice(start, start + ITEMS_PER_PAGE);
+        
+        paginatedTeachers.forEach(teacher => {
             const row = `<tr>
                 <td>${teacher.user.first_name} ${teacher.user.last_name}</td>
                 <td>${teacher.user.email}</td>
@@ -261,6 +288,8 @@ const API_URL = 'http://127.0.0.1:8000/api';
             </tr>`;
             tbody.innerHTML += row;
         });
+
+        renderPaginationControls('teacher', totalItems, totalPages, currentTeacherPage);
     }
 
     function renderMiniUsers() {
@@ -543,6 +572,84 @@ const API_URL = 'http://127.0.0.1:8000/api';
 
         openModal(modalId);
     }
+
+    // --- PAGINATION HELPERS ---
+
+    function renderPaginationControls(type, totalItems, totalPages, currentPage) {
+        const tableBody = document.getElementById(`${type}sTableBody`);
+        if (!tableBody) return;
+        
+        // Find or create pagination container
+        const table = tableBody.closest('table');
+        let container = document.getElementById(`${type}-pagination`);
+        
+        if (!container && table) {
+            container = document.createElement('div');
+            container.id = `${type}-pagination`;
+            container.className = 'pagination-container';
+            table.parentNode.insertBefore(container, table.nextSibling);
+        }
+
+        if (!container) return;
+
+        if (totalItems === 0) {
+            container.innerHTML = '';
+            return;
+        }
+
+        const startItem = (currentPage - 1) * ITEMS_PER_PAGE + 1;
+        const endItem = Math.min(currentPage * ITEMS_PER_PAGE, totalItems);
+
+        let buttonsHtml = '';
+        
+        // Previous Button
+        buttonsHtml += `<button class="btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage('${type}', ${currentPage - 1})">Prev</button>`;
+
+        // Page Numbers (Simple version: show all or simple range)
+        for (let i = 1; i <= totalPages; i++) {
+            // Show first, last, current, and adjacent pages
+            if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                buttonsHtml += `<button class="btn ${i === currentPage ? 'btn-primary-pag' : ''}" onclick="changePage('${type}', ${i})">${i}</button>`;
+            } else if (i === currentPage - 2 || i === currentPage + 2) {
+                buttonsHtml += `<span style="padding: 0 5px;">...</span>`;
+            }
+        }
+
+        // Next Button
+        buttonsHtml += `<button class="btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage('${type}', ${currentPage + 1})">Next</button>`;
+
+        container.innerHTML = `
+            <div class="pagination-info">Showing ${startItem} to ${endItem} of ${totalItems} entries</div>
+            <div class="pagination-buttons">${buttonsHtml}</div>
+        `;
+    }
+
+    window.changePage = function(type, page) {
+        if (type === 'student') {
+            currentStudentPage = page;
+            // Filter logic is inside existing listeners, but for pagination we assume current list is "latestStudents"
+            // Note: If a search is active, we should technically paginate the filtered results. 
+            // For simplicity in this implementation, we re-render the full list or we need to check search input.
+            const searchVal = document.getElementById('studentSearch').value.toLowerCase();
+            const students = searchVal ? latestStudents.filter(s => 
+                (s.user.first_name + ' ' + s.user.last_name).toLowerCase().includes(searchVal) ||
+                s.user.email.toLowerCase().includes(searchVal) ||
+                (s.course && s.course.toLowerCase().includes(searchVal))
+            ) : latestStudents;
+            
+            renderStudentsTable(students);
+        } else if (type === 'teacher') {
+            currentTeacherPage = page;
+            const searchVal = document.getElementById('teacherSearch').value.toLowerCase();
+            const teachers = searchVal ? latestTeachers.filter(t => 
+                (t.user.first_name + ' ' + t.user.last_name).toLowerCase().includes(searchVal) ||
+                t.user.email.toLowerCase().includes(searchVal) ||
+                (t.department && t.department.toLowerCase().includes(searchVal))
+            ) : latestTeachers;
+            
+            renderTeachersTable(teachers);
+        }
+    };
 
     async function handleUpdate(e, type) {
         e.preventDefault();

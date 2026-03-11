@@ -981,10 +981,65 @@ button[type="button"][onclick="closeModal('studentModal')"]:hover {
 body.modal-open {
     overflow: hidden;
 }
+.title-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top:30px;
+    margin-left: 10px;
+}
+.section-icon {
+    font-size: 28px;
+    color: #2c666e;
+}
 .dashboard-title-student,.dashboard-title-teacher
 {
     color: #2c666e;
-    margin-top: 30px;
-    margin-left: 10px;
+    margin: 0;
     font-size: 28px;
+}
+/* Pagination CSS */
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.pagination-info {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.pagination-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.btn {
+  padding: 8px 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary-pag {
+  background: #2c666e;
+  color: white;
+  border-color: #2c666e;
+}
+
+.btn-primary-pag:hover:not(:disabled) {
+  background: white;
+  color: #2c666e
 }
