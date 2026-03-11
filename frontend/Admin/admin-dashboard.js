@@ -29,6 +29,12 @@ const API_URL = 'http://127.0.0.1:8000/api';
             window.location.href = 'admin-login.html';
         });
 
+        // Refresh Button Handler
+        const refreshBtn = document.getElementById('refreshBtn');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', refreshDashboard);
+        }
+
         // Form Handlers
         document.getElementById('addStudentForm').addEventListener('submit', (e) => handleAdd(e, 'student'));
         document.getElementById('addTeacherForm').addEventListener('submit', (e) => handleAdd(e, 'teacher'));
@@ -95,10 +101,47 @@ const API_URL = 'http://127.0.0.1:8000/api';
         document.body.classList.remove('modal-open');
     }
 
-    function refreshDashboard() {
-        fetchStats();
-        fetchStudents();
-        fetchTeachers();
+    async function refreshDashboard() {
+        const refreshBtn = document.getElementById('refreshBtn');
+        console.log("Refresh started"); // Check console to see if this appears
+        let originalText = '';
+
+        if (refreshBtn) {
+            originalText = refreshBtn.innerHTML;
+            refreshBtn.innerHTML = 'Loading...';
+            refreshBtn.disabled = true;
+        }
+
+        document.body.style.cursor = 'wait';
+
+        // Show loading indicators in the dashboard widgets
+        const totalStudents = document.getElementById('total-students');
+        const totalTeachers = document.getElementById('total-teachers');
+        const miniUsersTable = document.getElementById('miniUsersTableBody');
+        const growthPill = document.getElementById('growthPill');
+
+        if (totalStudents) totalStudents.textContent = '...';
+        if (totalTeachers) totalTeachers.textContent = '...';
+        if (miniUsersTable) miniUsersTable.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:15px;">Loading data...</td></tr>';
+        if (growthPill) growthPill.textContent = 'Updating...';
+
+        // Enforce a minimum delay of 500ms so the user sees the loading state
+        const minDelay = new Promise(resolve => setTimeout(resolve, 500));
+
+        await Promise.all([
+            fetchStats(),
+            fetchStudents(),
+            fetchTeachers(),
+            minDelay
+        ]);
+
+        document.body.style.cursor = 'default';
+
+        if (refreshBtn) {
+            refreshBtn.innerHTML = originalText;
+            refreshBtn.disabled = false;
+        }
+        console.log("Refresh done");
     }
 
     function setWelcomeMessage(role) {
