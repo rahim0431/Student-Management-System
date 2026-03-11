@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration · Sage Campus</title>
+    <!-- Inter font for a crisp, modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Root variables using your HEX colors */
+        :root {
+            --primary-deep: #2C666E;    /* your specified deep teal */
+            --primary-light: #F0EDEE;    /* your specified soft off-white */
+            --accent-sage: #3D7B84;       /* subtle variant for hover */
+            --text-dark: #1F2C30;         /* almost black with a hint of teal */
+            --text-muted: #4F5E63;        
+            --border-light: #D6D2D4;      
+            --card-bg: #FFFFFF;
+            --success: #2E7D5E;
+            --danger: #B23B3B;
+            --warning: #B88B2F;
+            --shadow-sm: 0 8px 20px rgba(44, 102, 110, 0.08);
+            --shadow-md: 0 12px 30px rgba(44, 102, 110, 0.12);
+            --radius-card: 28px;
+            --radius-field: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--primary-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 920px;
+            margin: 0 auto;
+        }
+
+        /* main card with soft shadow and subtle border */
+        .register-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: transform 0.25s ease;
+            border: 1px solid rgba(240, 237, 238, 0.6);
+        }
+
+        /* header with your deep teal */
+        .register-header {
+            background: var(--primary-deep);
+            color: white;
+            padding: 32px 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 10px;
+        }
+
+        .logo svg {
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: white;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            font-weight: 400;
+            opacity: 0.9;
+            border-left: 3px solid #F0EDEE;
+            padding-left: 18px;
+            margin-left: 58px;
+            color: #F0EDEE;
+        }
+
+        /* form area with clean background */
+        .register-form {
+            padding: 44px 44px 48px;
+            background: white;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 26px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--primary-deep);
+        }
+
+        /* all inputs & selects share same professional style */
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1.5px solid var(--border-light);
+            border-radius: var(--radius-field);
+            font-size: 0.95rem;
+            font-weight: 500;
+            background-color: white;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-deep);
+            box-shadow: 0 0 0 4px rgba(44, 102, 110, 0.15);
+        }
+
+        .form-group input.error,
+        .form-group select.error {
+            border-color: var(--danger);
+            background-color: #FEF6F6;
+        }
+
+        /* ----- DROPDOWN (SELECT) FIX: custom arrow that works and looks pro ----- */
+        .form-group select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9L12 15L18 9' stroke='%232C666E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 18px center;
+            background-size: 18px;
+            padding-right: 48px;
+            cursor: pointer;
+        }
+
+        /* remove default arrow in IE */
+        .form-group select::-ms-expand {
+            display: none;
+        }
+
+        /* on hover/focus, arrow can slightly change (optional) */
+        .form-group select:hover {
+            border-color: var(--primary-deep);
+        }
+
+        /* error message style */
+        .error-message {
+            display: block;
+            color: var(--danger);
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 6px;
+            min-height: 18px;
+            padding-left: 8px;
+        }
+
+        /* primary button using your teal */
+        .btn-primary {
+            width: 100%;
+            padding: 16px 28px;
+            background: var(--primary-deep);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            margin-top: 14px;
+            box-shadow: 0 8px 22px rgba(44, 102, 110, 0.35);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-primary:hover {
+            background: #1F5057;  /* darker shade of #2C666E */
+            transform: translateY(-3px);
+            box-shadow: 0 16px 28px rgba(44, 102, 110, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #F0EDEE;
+        }
+
+        .form-footer p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .form-footer a {
+            color: var(--primary-deep);
+            text-decoration: none;
+            font-weight: 700;
+            border-bottom: 1.5px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .form-footer a:hover {
+            border-bottom-color: var(--primary-deep);
+        }
+
+        /* api / status message */
+        .api-message {
+            background: #F0EDEE;
+            border: 1px solid var(--primary-deep);
+            color: var(--text-dark);
+            padding: 14px 22px;
+            border-radius: 60px;
+            margin-bottom: 30px;
+            display: none;
+            align-items: center;
+            gap: 14px;
+            font-weight: 500;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .api-message.show {
+            display: flex;
+        }
+
+        .api-message.error {
+            background: #FFE9E9;
+            border-color: var(--danger);
+            color: #A12B2B;
+        }
+
+        .api-message svg {
+            flex-shrink: 0;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* password strength indicator uses your palette */
+        #passwordError {
+            transition: color 0.1s;
+        }
+
+        /* responsive */
+        @media (max-width: 700px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .register-header { padding: 28px 24px; }
+            .logo h1 { font-size: 1.7rem; }
+            .subtitle { margin-left: 0; }
+            .register-form { padding: 32px 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="register-card">
+            <div class="register-header">
+                <div class="logo">
+                    <!-- subtle logo with your colors -->
+                    <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                        <rect width="46" height="46" rx="12" fill="#F0EDEE" fill-opacity="0.2"/>
+                        <rect x="5" y="5" width="36" height="36" rx="10" fill="white"/>
+                        <path d="M23 15L15 19V25C15 29.42 18.58 33 23 33C27.42 33 31 29.42 31 25V19L23 15Z" fill="#2C666E" stroke="#1A444A" stroke-width="1.6" stroke-linejoin="round"/>
+                        <circle cx="23" cy="25" r="3" fill="#F0EDEE"/>
+                    </svg>
+                    <h1>Sage Campus</h1>
+                </div>
+                <p class="subtitle">Student registration · powered by #2C666E</p>
+            </div>
+
+            <form id="registerForm" class="register-form" novalidate>
+                <!-- dynamic status message (API feedback) -->
+                <div id="apiMessage" class="api-message"></div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First name *</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="Alex" required>
+                        <span class="error-message" id="firstNameError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last name *</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="Morgan" required>
+                        <span class="error-message" id="lastNameError"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email address *</label>
+                    <input type="email" id="email" name="email" placeholder="a.morgan@university.edu" required>
+                    <span class="error-message" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone number *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+1 (555) 321-9876" required>
+                    <span class="error-message" id="phoneError"></span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="course">Course *</label>
+                        <!-- Dropdown fixed: clean options, no glitches, arrow uses #2C666E -->
+                        <select id="course" name="course" required>
+                            <option value="" disabled selected>— choose program —</option>
+                            <option value="Computer Science">💻 Computer Science</option>
+                            <option value="Business Administration">📊 Business Administration</option>
+                            <option value="Engineering">⚙️ Engineering</option>
+                            <option value="Medicine">🩺 Medicine</option>
+                            <option value="Arts & Design">🎨 Arts & Design</option>
+                            <option value="Data Science">📈 Data Science</option>
+                        </select>
+                        <span class="error-message" id="courseError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year *</label>
+                        <select id="year" name="year" required>
+                            <option value="" disabled selected>— select year —</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                            <option value="Graduate">Graduate</option>
+                        </select>
+                        <span class="error-message" id="yearError"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="enrollmentDate">Enrollment date *</label>
+                    <input type="date" id="enrollmentDate" name="enrollmentDate" required>
+                    <span class="error-message" id="enrollmentDateError"></span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password">Password *</label>
+                        <input type="password" id="password" name="password" placeholder="create strong password" required>
+                        <span class="error-message" id="passwordError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm password *</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="re-enter password" required>
+                        <span class="error-message" id="confirmPasswordError"></span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="submitBtn">
+                    <span>Enroll student</span>
+                </button>
+
+                <div class="form-footer">
+                    <p>Already registered? <a href="login.html">Log in</a>  ·  <a href="dashboard.html">demo dashboard</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // DOM elements
+            const form = document.getElementById('registerForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const apiMsgDiv = document.getElementById('apiMessage');
+
+            // helpers
+            function clearErrors() {
+                document.querySelectorAll('input, select').forEach(el => el.classList.remove('error'));
+                document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            }
+
+            function showError(fieldId, msg) {
+                const input = document.getElementById(fieldId);
+                const errSpan = document.getElementById(fieldId + 'Error');
+                if (input) input.classList.add('error');
+                if (errSpan) errSpan.textContent = msg;
+            }
+
+            function setApiMessage(text, isError = false) {
+                apiMsgDiv.innerHTML = ''; // reset
+                apiMsgDiv.className = 'api-message show' + (isError ? ' error' : '');
+                const icon = isError 
+                    ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+                    : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-linecap="round"/></svg>';
+                apiMsgDiv.innerHTML = icon + ' ' + text;
+            }
+
+            function hideApiMessage() {
+                apiMsgDiv.classList.remove('show', 'error');
+            }
+
+            function setLoading(loading) {
+                if (loading) {
+                    submitBtn.innerHTML = '<span class="spinner"></span> processing...';
+                    submitBtn.disabled = true;
+                } else {
+                    submitBtn.innerHTML = '<span>Enroll student</span>';
+                    submitBtn.disabled = false;
+                }
+            }
+
+            // password strength (optional)
+            document.getElementById('password').addEventListener('input', function() {
+                const pwd = this.value;
+                const err = document.getElementById('passwordError');
+                if (!pwd) return err.textContent = '';
+                if (pwd.length < 6) {
+                    err.textContent = '❄️ too short (min 6)';
+                    err.style.color = 'var(--danger)';
+                } else if (pwd.length < 8) {
+                    err.textContent = '⚠️ medium strength';
+                    err.style.color = 'var(--warning)';
+                } else {
+                    err.textContent = '✅ strong password';
+                    err.style.color = 'var(--success)';
+                }
+            });
+
+            // blur validation (simple)
+            document.querySelectorAll('input, select').forEach(el => {
+                el.addEventListener('blur', function() {
+                    if (this.hasAttribute('required') && !this.value.trim()) {
+                        showError(this.id, 'This field is required');
+                    } else {
+                        if (this.classList.contains('error')) {
+                            document.getElementById(this.id + 'Error').textContent = '';
+                            this.classList.remove('error');
+                        }
+                    }
+                });
+                el.addEventListener('input', function() {
+                    if (this.classList.contains('error') && this.value.trim()) {
+                        this.classList.remove('error');
+                        document.getElementById(this.id + 'Error').textContent = '';
+                    }
+                });
+            });
+
+            // main submit with fake API (uses your colors for feedback)
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                hideApiMessage();
+                clearErrors();
+
+                // gather data
+                const formData = {
+                    firstName: document.getElementById('firstName').value.trim(),
+                    lastName: document.getElementById('lastName').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    course: document.getElementById('course').value,
+                    year: document.getElementById('year').value,
+                    enrollmentDate: document.getElementById('enrollmentDate').value,
+                    password: document.getElementById('password').value,
+                    confirmPassword: document.getElementById('confirmPassword').value
+                };
+
+                // --- validation ---
+                let isValid = true;
+
+                if (formData.firstName.length < 2) { showError('firstName', 'Min 2 characters'); isValid = false; }
+                if (formData.lastName.length < 2) { showError('lastName', 'Min 2 characters'); isValid = false; }
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(formData.email)) { showError('email', 'Valid email needed'); isValid = false; }
+                // phone: accept digits, spaces, +, -, parentheses — but ensure at least 10 digits
+                const digitsOnly = formData.phone.replace(/\D/g, '');
+                if (digitsOnly.length < 10) { showError('phone', 'Enter at least 10 digits'); isValid = false; }
+                if (!formData.course) { showError('course', 'Pick a course'); isValid = false; }
+                if (!formData.year) { showError('year', 'Select year'); isValid = false; }
+                if (!formData.enrollmentDate) { showError('enrollmentDate', 'Choose date'); isValid = false; }
+                if (formData.password.length < 6) { showError('password', 'Password min 6'); isValid = false; }
+                if (formData.password !== formData.confirmPassword) { showError('confirmPassword', 'Passwords must match'); isValid = false; }
+
+                if (!isValid) {
+                    setApiMessage('Please correct the fields above', true);
+                    return;
+                }
+
+                // start loading, fake API
+                setLoading(true);
+                setApiMessage('Connecting to secure registry ...', false);
+
+                // Inside the try block (around line 317)
+                try 
+                {
+                    // YOUR REAL API CALL
+                    const response = await fetch('http://127.0.0.1:8000/api/register', {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (response.ok) {
+                        setApiMessage('✅ ' + (result.message || 'Registration successful!'), false);
+                        form.reset();
+                        setLoading(false);
+                    } else {
+                        // Handle Laravel validation errors (e.g. "Email already taken")
+                        let errorMessage = result.message || 'Registration failed';
+                        
+                        if (result.errors) {
+                            // Get the first validation error message
+                            const firstField = Object.keys(result.errors)[0];
+                            errorMessage = result.errors[firstField][0];
+                        }
+                        
+                        throw new Error(errorMessage);
+                    }
+                } catch (err) {
+                    setApiMessage(`❌ API error: ${err.message}`, true);
+                    setLoading(false);
+                }   
+            });
+
+        })();
+    </script>
+</body>
+</html>

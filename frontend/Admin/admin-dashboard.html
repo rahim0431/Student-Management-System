@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="admin-dashboard.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-straight/css/uicons-bold-straight.css'>
+    <title>Admin Dashboard · Sage Campus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-chubby/css/uicons-solid-chubby.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-straight/css/uicons-solid-straight.css'>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-straight/css/uicons-solid-straight.css'>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <div class="brand-container">
+                <div class="logo-box">
+                    <img src="icons/graduate.gif" alt="Learnova Logo" class="brand-icon" style="height: 65px; width: 65px; margin-bottom: 8px;">
+                </div>
+                <h1 class="brand-name">Learnova</h1>
+            </div>
+            <i class="fi fi-bs-dot-circle" style="font-size: 1.8rem; color: #2c666e; margin-left: 70px; margin-top: 7px;"></i>
+            <a href="#" id="headerSectionLink" class="header-section-link" onclick="goToCurrentSection(event)">Dashboard</a>
+        </div>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+    </header>
+
+    <div class="container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <a class="nav-item active" data-section="dashboard" onclick="showSection('dashboard', this)"><i class="fi fi-ss-home" style="color: white; margin-right: 15px;"></i>Dashboard</a>
+            <a class="nav-item" data-section="students" onclick="showSection('students', this)"><i class="fi fi-ss-graduation-cap" style="color: white; margin-right: 15px;"></i>Manage Students</a>
+            <a class="nav-item" data-section="teachers" onclick="showSection('teachers', this)"><i class="fi fi-ss-chalkboard-user" style="color: white; margin-right: 15px;"></i>Manage Teachers</a>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            
+            <!-- DASHBOARD SECTION -->
+            <div id="dashboard" class="section active">
+                <div class="action-bar">
+                    <div class="dashboard-welcome">
+                        <h2 class="dashboard-title">
+                            <span id="welcomeGreeting">Welcome back</span>, <span id="welcomeRole" class="welcome-role">Admin</span>
+                            <i class="fi fi-ss-hand-wave" style="margin-left: 2px;"></i>
+                        </h2>
+                        <p class="welcome-subtitle" id="welcomeSubtitle">Here is your campus overview for today.</p>
+                    </div>
+                    <button class="btn-primary" onclick="refreshDashboard()">Refresh Data</button>
+                </div>
+            
+                <!-- grid section -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-dot"></span>
+                        <div class="stat-icon-wrap">
+                            <img src="icons/student-icon.png" alt="Students icon" class="stat-icon-img" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                            <span class="stat-icon-fallback">S</span>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Total Students</h3>
+                            <p class="stat-number" id="total-students">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-dot"></span>
+                        <div class="stat-icon-wrap">
+                            <img src="icons/teacher-icon.png" alt="Teachers icon" class="stat-icon-img" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                            <span class="stat-icon-fallback">T</span>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Total Teachers</h3>
+                            <p class="stat-number" id="total-teachers">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mini-users-row">
+                    <!-- Manage Users (Compact) -->
+                    <div class="mini-users-card">
+                        <div class="mini-users-header">
+                            <h3 class="mini-users-title">Manage Users</h3>
+                        </div>
+                        <div class="table-scroll-wrapper">
+                            <table class="mini-users-table">
+                                <thead>
+                                    <tr class="manage-users-heading">
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="miniUsersTableBody">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Growth Card -->
+                    <div class="growth-card">
+                        <div class="growth-header">
+                            <h3>Student &amp; Teacher Growth</h3>
+                            <span class="growth-pill" id="growthPill"></span>
+                        </div>
+                        <div class="growth-chart">
+                            <svg viewBox="0 0 360 220" role="img" aria-label="Student and teacher growth chart">
+                                <defs>
+                                    <linearGradient id="studentsFill" x1="0" x2="0" y1="0" y2="1">
+                                        <stop offset="0%" stop-color="#7cc6e6" stop-opacity="0.4"></stop>
+                                        <stop offset="100%" stop-color="#7cc6e6" stop-opacity="0"></stop>
+                                    </linearGradient>
+                                    <linearGradient id="teachersFill" x1="0" x2="0" y1="0" y2="1">
+                                        <stop offset="0%" stop-color="#8fd0a6" stop-opacity="0.35"></stop>
+                                        <stop offset="100%" stop-color="#8fd0a6" stop-opacity="0"></stop>
+                                    </linearGradient>
+                                </defs>
+                                <!-- Grid -->
+                                <g class="chart-grid">
+                                    <line x1="40" y1="30" x2="330" y2="30"></line>
+                                    <line x1="40" y1="80" x2="330" y2="80"></line>
+                                    <line x1="40" y1="130" x2="330" y2="130"></line>
+                                    <line x1="40" y1="180" x2="330" y2="180"></line>
+                                </g>
+                                <!-- Y labels -->
+                                <g class="chart-labels" id="yAxisLabels">
+                                    <text x="10" y="34">60</text>
+                                    <text x="12" y="84">40</text>
+                                    <text x="12" y="134">20</text>
+                                    <text x="16" y="184">0</text>
+                                </g>
+                                <!-- Areas -->
+                                <path class="students-area" id="studentsArea" d=""></path>
+                                <path class="teachers-area" id="teachersArea" d=""></path>
+                                <!-- Lines -->
+                                <path class="students-line" id="studentsLine" d=""></path>
+                                <path class="teachers-line" id="teachersLine" d=""></path>
+                                <!-- Points -->
+                                <g class="students-points" id="studentsPoints">
+                                    <!-- JS will populate -->
+                                </g>
+                                <g class="teachers-points" id="teachersPoints">
+                                    <!-- JS will populate -->
+                                </g>
+                                <!-- X labels -->
+                                <g class="chart-labels" id="xAxisLabels">
+                                    <!-- JS will populate -->
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="growth-legend">
+                            <span class="legend-item"><span class="legend-dot legend-students"></span>Students</span>
+                            <span class="legend-item"><span class="legend-dot legend-teachers"></span>Teachers</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Action -->
+                <h3 class="quick-actions-title">Quick Actions</h3>
+                <div class="quick-actions-grid">
+                    <button type="button" class="quick-action-card quick-action-student" onclick="openModal('studentModal')">
+                        <img src="icons/student-icon1.png" alt="Student action icon" class="quick-action-icon" onerror="this.src='graduate.gif'">
+                        <span class="quick-action-text">+ Add Student</span>
+                        <span class="quick-action-arrow">&rsaquo;</span>
+                    </button>
+                    <button type="button" class="quick-action-card quick-action-teacher" onclick="openModal('teacherModal')">
+                        <img src="icons/teacher-icon2.png" alt="Teacher action icon" class="quick-action-icon" onerror="this.src='graduate.gif'">
+                        <span class="quick-action-text">+ Add Teacher</span>
+                        <span class="quick-action-arrow">&rsaquo;</span>
+                    </button>
+                </div>
+                
+            </div>
+
+            <!-- STUDENTS SECTION -->
+            <div id="students" class="section">
+                <div class="action-bar">
+                    <h2 class="dashboard-title-student">Students</h2>
+                    <i class="fi fi-sr-student" style="color: #2c666e; font-size: 30px; margin-left: -80px; margin-top: 5px;"></i>
+                    <div class="search-input">
+                        <input type="search" id="studentSearch" placeholder="Enter search term...">
+                    </div>
+                    <button class="btn-primary" onclick="openModal('studentModal')">+ Add Student</button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th class="col-name">Name</th>
+                            <th class="col-email">Email</th>
+                            <th class="col-phone">Phone</th>
+                            <th class="col-course">Course</th>
+                            <th class="col-year">Year</th>
+                            <th class="col-actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableBody">
+                        <!-- JS will populate this -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TEACHERS SECTION -->
+            <div id="teachers" class="section">
+                <div class="action-bar">
+                    <h2 class="dashboard-title-teacher">Teachers</h2>
+                    <i class="fi fi-sr-person-chalkboard" style="color: #2c666e; font-size: 30px; margin-left: -80px; margin-top: 5px;"></i>
+                    <div class="search-input">
+                        <input type="search" id="teacherSearch" placeholder="Enter Search Term...">
+                    </div>
+                    <button class="btn-primary" onclick="openModal('teacherModal')">+ Add Teacher</button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th class="col-name">Name</th>
+                            <th class="col-email">Email</th>
+                            <th class="col-phone">Phone</th>
+                            <th class="col-dept">Department</th>
+                            <th class="col-exp">Experience</th>
+                            <th class="col-actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teachersTableBody">
+                        <!-- JS will populate this -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- ADD STUDENT MODAL -->
+    <div id="studentModal" class="modal">
+        <div class="modal-content">
+            <h3>Add New Student</h3>
+            <form id="addStudentForm">
+                <div class="form-group"><label>First Name</label><input type="text" name="first_name" required></div>
+                <div class="form-group"><label>Last Name</label><input type="text" name="last_name" required></div>
+                <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
+                <div class="form-group"><label>Password</label><input type="password" name="password" required></div>
+                <div class="form-group"><label>Phone</label><input type="text" name="phone" required></div>
+                <div class="form-group"><label>Course</label><input type="text" name="course"></div>
+                <div class="form-group"><label>Year</label><input type="text" name="year"></div>
+                <button type="submit" class="btn-primary" style="width:100%">Create Student</button>
+                <button type="button" onclick="closeModal('studentModal')" style="width:100%; margin-top:10px; background:none; border:none; cursor:pointer;">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ADD TEACHER MODAL -->
+    <div id="teacherModal" class="modal">
+        <div class="modal-content">
+            <h3>Add New Teacher</h3>
+            <form id="addTeacherForm">
+                <div class="form-group"><label>First Name</label><input type="text" name="first_name" required></div>
+                <div class="form-group"><label>Last Name</label><input type="text" name="last_name" required></div>
+                <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
+                <div class="form-group"><label>Password</label><input type="password" name="password" required></div>
+                <div class="form-group"><label>Phone</label><input type="text" name="phone"></div>
+                <div class="form-group"><label>Department</label><input type="text" name="department" required></div>
+                <div class="form-group"><label>Experience</label><input type="number" name="experience" required></div>
+                <button type="submit" class="btn-primary" style="width:100%">Create Teacher</button>
+                <button type="button" onclick="closeModal('teacherModal')" style="width:100%; margin-top:10px; background:none; border:none; cursor:pointer;">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- EDIT STUDENT MODAL -->
+    <div id="editStudentModal" class="modal">
+        <div class="modal-content">
+            <h3>Edit Student</h3>
+            <form id="editStudentForm">
+                <input type="hidden" name="id">
+                <div class="form-group"><label>First Name</label><input type="text" name="first_name" required></div>
+                <div class="form-group"><label>Last Name</label><input type="text" name="last_name" required></div>
+                <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
+                <div class="form-group"><label>Password (leave blank to keep unchanged)</label><input type="password" name="password"></div>
+                <div class="form-group"><label>Phone</label><input type="text" name="phone" required></div>
+                <div class="form-group"><label>Course</label><input type="text" name="course"></div>
+                <div class="form-group"><label>Year</label><input type="text" name="year"></div>
+                <button type="submit" class="btn-primary" style="width:100%">Update Student</button>
+                <button type="button" onclick="closeModal('editStudentModal')" style="width:100%; margin-top:10px; background:none; border:none; cursor:pointer;">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- EDIT TEACHER MODAL -->
+    <div id="editTeacherModal" class="modal">
+        <div class="modal-content">
+            <h3>Edit Teacher</h3>
+            <form id="editTeacherForm">
+                <input type="hidden" name="id">
+                <div class="form-group"><label>First Name</label><input type="text" name="first_name" required></div>
+                <div class="form-group"><label>Last Name</label><input type="text" name="last_name" required></div>
+                <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
+                <div class="form-group"><label>Password (leave blank to keep unchanged)</label><input type="password" name="password"></div>
+                <div class="form-group"><label>Phone</label><input type="text" name="phone"></div>
+                <div class="form-group"><label>Department</label><input type="text" name="department" required></div>
+                <div class="form-group"><label>Experience</label><input type="number" name="experience" required></div>
+                <button type="submit" class="btn-primary" style="width:100%">Update Teacher</button>
+                <button type="button" onclick="closeModal('editTeacherModal')" style="width:100%; margin-top:10px; background:none; border:none; cursor:pointer;">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- VIEW STUDENT MODAL -->
+    <div id="viewStudentModal" class="modal">
+        <div class="modal-content">
+            <h3>View Student Details</h3>
+            <div class="form-grid" style="gap: 20px 16px;">
+                <div class="form-group"><label>First Name</label><input type="text" name="first_name" disabled></div>
+                <div class="form-group"><label>Last Name</label><input type="text" name="last_name" disabled></div>
+                <div class="form-group full"><label>Email</label><input type="email" name="email" disabled></div>
+                <div class="form-group"><label>Phone</label><input type="text" name="phone" disabled></div>
+                <div class="form-group"><label>Course</label><input type="text" name="course" disabled></div>
+                <div class="form-group"><label>Year</label><input type="text" name="year" disabled></div>
+            </div>
+            <button type="button" onclick="closeModal('viewStudentModal')" class="modal-btn modal-btn-secondary" style="width:100%; margin-top:25px;">Close</button>
+        </div>
+    </div>
+
+    <!-- VIEW TEACHER MODAL -->
+    <div id="viewTeacherModal" class="modal">
+        <div class="modal-content">
+            <h3>View Teacher Details</h3>
+            <div class="form-grid" style="gap: 20px 16px;">
+                <div class="form-group"><label>First Name</label><input type="text" name="first_name" disabled></div>
+                <div class="form-group"><label>Last Name</label><input type="text" name="last_name" disabled></div>
+                <div class="form-group full"><label>Email</label><input type="email" name="email" disabled></div>
+                <div class="form-group"><label>Phone</label><input type="text" name="phone" disabled></div>
+                <div class="form-group"><label>Department</label><input type="text" name="department" disabled></div>
+                <div class="form-group"><label>Experience (Years)</label><input type="number" name="experience" disabled></div>
+            </div>
+            <button type="button" onclick="closeModal('viewTeacherModal')" class="modal-btn modal-btn-secondary" style="width:100%; margin-top:25px;">Close</button>
+        </div>
+    </div>
+
+   <script src="admin-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login · Sage Campus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-deep: #2C666E;
+            --primary-light: #F0EDEE;
+            --accent-sage: #3D7B84;
+            --text-dark: #1F2C30;
+            --text-muted: #4F5E63;
+            --border-light: #D6D2D4;
+            --card-bg: #FFFFFF;
+            --shadow-sm: 0 8px 20px rgba(44, 102, 110, 0.08);
+            --radius-card: 32px;
+            --radius-button: 50px;
+            --error-color: #D9534F;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background: var(--card-bg);
+            padding: 50px;
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-sm);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-decoration: none;
+            margin-bottom: 30px;
+        }
+        .logo svg { width: 40px; height: 40px; }
+        .logo h1 { font-size: 1.8rem; color: var(--primary-deep); }
+        h2 {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+        p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+        .login-form .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .login-form label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+        .login-form input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .login-form input:focus {
+            outline: none;
+            border-color: var(--primary-deep);
+            box-shadow: 0 0 0 3px rgba(44, 102, 110, 0.2);
+        }
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            background: var(--primary-deep);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: var(--radius-button);
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .login-btn:hover { background: var(--accent-sage); }
+        .login-btn:active { transform: scale(0.98); }
+        #error-message {
+            color: var(--error-color);
+            margin-top: 20px;
+            font-weight: 500;
+            min-height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <a href="./Home Page/home.html" class="logo">
+            <svg width="70" height="70" viewBox="0 0 70 70" fill="none"><rect width="70" height="70" rx="18" fill="#F0EDEE" fill-opacity="0.15"/><rect x="9" y="9" width="52" height="52" rx="14" fill="white"/><path d="M35 22L22 28.5V37.5C22 44.6 27.8 50.5 35 50.5C42.2 50.5 48 44.6 48 37.5V28.5L35 22Z" fill="#2C666E" stroke="#1A444A" stroke-width="2.2" stroke-linejoin="round"/><circle cx="35" cy="37" r="5" fill="#F0EDEE"/></svg>
+            <h1>Sage Campus</h1>
+        </a>
+        <h2>Admin Portal</h2>
+        <p>Please sign in to continue</p>
+        <form id="loginForm" class="login-form">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="login-btn">Sign In</button>
+        </form>
+        <div id="error-message"></div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem("token");
+        const role = localStorage.getItem("role");
+
+        if (token && role === "admin") {
+            window.location.href = "admin-dashboard.html";
+        }
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+            const submitBtn = this.querySelector('button[type="submit"]');
+
+            errorMessage.textContent = '';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Verifying...';
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || 'Login failed. Please check your credentials.');
+
+                console.log(data);
+
+                if (data.role && data.role.toLowerCase() === 'admin') {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('role', data.role);
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    throw new Error('Access denied. Administrator privileges required.');
+                }
+                
+            } catch (error) {
+                errorMessage.textContent = error.message;
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Sign In';
+            }
+        });
+    </script>
+</body>
+</html>
