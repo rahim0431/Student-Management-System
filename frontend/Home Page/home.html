@@ -31,10 +31,11 @@
             <section class="hero-section">
             <div class="hero-content">
                 <div class="hero-text">
-                    <h1>Manage your campus <span style="color: #2c666e;"> with Confidence</span></h1>
+                    <h1>Manage your campus <span style="color: #2c666e;"> with Learnova</span></h1>
                     <p>A unified platform for administrators, teachers, and students.</p>
                     <p class="subtitle">Streamline your educational journey today.</p>
-                    <a href="#signup" class="hero-btn">Get Started for Free</a>
+                    <a href="#signup" class="hero-btn">Get Started for Free</a>                  
+                    <a href="#contact" class="hero-btn" style="margin-left: 25px;">Request Demo</a>                    
                 </div>
                 <div class="hero-scene" aria-hidden="true">
                     <div class="sms-board">
@@ -138,47 +139,30 @@
 
             <section id="features" class="features-section">
                 <div class="section-title">
-                    <h2>Built for modern campuses</h2>
+                    <h2>Built For Modern Campuses</h2>
                     <p>Tools that keep every department aligned</p>
                 </div>
                 <div class="features-grid">
                     <div class="feature-card">
                         <div class="feature-icon comm">
-                            <svg viewBox="0 0 64 64" aria-hidden="true">
-                                <rect x="6" y="10" width="36" height="26" rx="8"></rect>
-                                <path d="M16 36 L12 48 L26 38"></path>
-                                <rect x="22" y="24" width="36" height="26" rx="8"></rect>
-                                <path d="M42 50 L52 60 L52 48"></path>
-                            </svg>
+                            <img src="icons/books.gif" alt="Learnova Logo">
                         </div>
-                        <h3>Simplified Communication</h3>
-                        <p>Message students, parents, and staff with clarity and quick approvals.</p>
+                        <h3>Student Management</h3>
+                        <p>Add, Update, and Manage student records in one centralized dashboard.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon finance">
-                            <svg viewBox="0 0 64 64" aria-hidden="true">
-                                <rect x="8" y="14" width="48" height="32" rx="8"></rect>
-                                <circle cx="24" cy="30" r="8"></circle>
-                                <path d="M40 22 L52 22"></path>
-                                <path d="M40 30 L52 30"></path>
-                                <path d="M40 38 L52 38"></path>
-                            </svg>
+                            <img src="icons/documents.gif" alt="Learnova Logo">
                         </div>
-                        <h3>Fees & Finance Tracking</h3>
-                        <p>Track invoices, scholarships, and payment status across every campus.</p>
+                        <h3>Teacher Administration</h3>
+                        <p>Manage teacher Profiles, Departments, and Assignments easily.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon plan">
-                            <svg viewBox="0 0 64 64" aria-hidden="true">
-                                <rect x="10" y="10" width="44" height="44" rx="10"></rect>
-                                <path d="M22 24 L42 24"></path>
-                                <path d="M22 32 L42 32"></path>
-                                <path d="M22 40 L36 40"></path>
-                                <circle cx="42" cy="40" r="6"></circle>
-                            </svg>
+                            <img src="icons/growth.gif" alt="Learnova Logo">
                         </div>
-                        <h3>Academic Planning</h3>
-                        <p>Plan timetables, credits, and counselor workflows in one view.</p>
+                        <h3>Real-time Dashboard Insights</h3>
+                        <p>View total Students, Teachers, and Activity updates instantly.</p>
                     </div>
                 </div>
             </section>
@@ -187,7 +171,12 @@
                 <div class="about-grid">
                     <div class="about-text">
                         <h2>About Learnova</h2>
-                        <p>Learnova unifies admissions, attendance, grading, and finance into a single, secure student management hub. Built for administrators and educators who need faster decisions without compromising data integrity.</p>
+                        <p>Learnova is a modern student management platform 
+                            designed for schools and colleges. 
+                            It allows administrators to manage students, teachers, 
+                            and academic records through a centralized dashboard. 
+                            The system simplifies campus operations while ensuring 
+                            secure data management.</p>
                         <div class="about-points">
                             <span>Role-based access for every department</span>
                             <span>Unified student records across campuses</span>
@@ -223,17 +212,30 @@
                             <input type="email" placeholder="Work Email" aria-label="Work Email" required>
                         </div>
                         <div class="form-row">
-                            <input type="text" placeholder="Campus Size" aria-label="Campus Size">
-                            <select aria-label="Primary Goal">
-                                <option>Primary Goal</option>
-                                <option>Admissions & onboarding</option>
-                                <option>Attendance & academics</option>
-                                <option>Fees & finance</option>
-                                <option>All-in-one management</option>
+                            <input type="text" placeholder="Phone Number" aria-label="Phone Number" required>
+                            <input type="text" placeholder="Institution Name" aria-label="Institution Name" required>
+                        </div>
+                        <div class="form-row">
+                            <select aria-label="Institution Type" required>
+                                <option value="" disabled selected>Institution Type</option>
+                                <option>School</option>
+                                <option>College</option>
+                                <option>University</option>
+                                <option>Training Institute</option>
+                            </select>
+                            <select aria-label="Primary Goal" required>
+                                <option value="" disabled selected>Primary Goal</option>
+                                <option>Student Management</option>
+                                <option>Teacher Management</option>
+                                <option>Attendance Tracking</option>
+                                <option>Complete Campus Management</option>
                             </select>
                         </div>
+                        <div class="form-row single">
+                            <input type="text" placeholder="Campus Size" aria-label="Campus Size">
+                        </div>
                         <textarea rows="3" placeholder="Tell us what you need help with" aria-label="Message"></textarea>
-                        <button type="submit" class="contact-btn">Schedule My Demo</button>
+                        <button type="submit" class="contact-btn">Start with Learnova</button>
                     </form>
                 </div>
             </section>

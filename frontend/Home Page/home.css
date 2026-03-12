@@ -725,6 +725,9 @@ section[id] {
     border-radius: 24px;
     padding: 26px;
     box-shadow: 0 14px 30px rgba(44, 102, 110, 0.08);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
 }
 
 .feature-card h3 {
@@ -742,12 +745,13 @@ section[id] {
     width: 64px;
     height: 64px;
     border-radius: 18px;
-    background: #e6efef;
+    background: #eaeeee;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 18px;
     box-shadow: 0 10px 18px rgba(44, 102, 110, 0.12);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .feature-icon svg {
@@ -760,12 +764,49 @@ section[id] {
     stroke-linejoin: round;
 }
 
+.feature-icon img {
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+    display: block;
+}
+
+.feature-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 80% 0%, rgba(44, 102, 110, 0.12), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.feature-card:hover {
+    transform: translateY(-6px);
+    background: #ffffff;
+    border-color: rgba(44, 102, 110, 0.28);
+    box-shadow: 0 24px 44px rgba(44, 102, 110, 0.18);
+}
+
+.feature-card:hover::after {
+    opacity: 1;
+}
+
+.feature-card:hover .feature-icon {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 14px 26px rgba(44, 102, 110, 0.22);
+}
+
+.feature-card:hover h3 {
+    color: var(--primary-deep);
+}
+
 .feature-icon.comm {
     background: linear-gradient(140deg, #e5f0f0, #cfe1e1);
 }
 
 .feature-icon.finance {
-    background: linear-gradient(140deg, #f2efe8, #d9e5d6);
+    background: linear-gradient(140deg, #e5f0f0, #cfe1e1);
 }
 
 .feature-icon.plan {
@@ -789,21 +830,21 @@ section[id] {
 
 .about-text h2 {
     font-size: 2.4rem;
-    margin-bottom: 14px;
+    margin-bottom: 25px;
     color: var(--primary-deep);
 }
 
 .about-text p {
     color: var(--text-muted);
     line-height: 1.7;
-    margin-bottom: 18px;
+    margin-bottom: 38px;
     font-size: 1.05rem;
 }
 
 .about-points {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
 
 .about-points span {
@@ -828,6 +869,9 @@ section[id] {
     text-align: center;
     box-shadow: 0 12px 24px rgba(44, 102, 110, 0.12);
     border: 1px solid rgba(44, 102, 110, 0.12);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .stat-card h3 {
@@ -839,6 +883,30 @@ section[id] {
 .stat-card p {
     color: var(--text-muted);
     font-size: 0.95rem;
+}
+
+.stat-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(44, 102, 110, 0.18), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.stat-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    border-color: rgba(44, 102, 110, 0.3);
+    box-shadow: 0 22px 38px rgba(44, 102, 110, 0.2);
+}
+
+.stat-card:hover::after {
+    opacity: 1;
+}
+
+.stat-card:hover h3 {
+    color: var(--primary-deep);
 }
 
 /* CONTACT */
@@ -883,6 +951,10 @@ section[id] {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
+}
+
+.form-row.single {
+    grid-template-columns: 1fr;
 }
 
 .contact-form input,
