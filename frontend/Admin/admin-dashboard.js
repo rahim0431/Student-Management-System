@@ -12,6 +12,7 @@ const API_URL = 'http://127.0.0.1:8000/api';
     let currentStudentPage = 1;
     let currentTeacherPage = 1;
     let demoRequests = [];
+    const DEMO_SEEN_KEY = 'demoRequestsSeenCount';
     const ITEMS_PER_PAGE = 6;
 
     document.addEventListener("DOMContentLoaded", function(){
@@ -27,6 +28,12 @@ const API_URL = 'http://127.0.0.1:8000/api';
         updateHeaderSection(currentSection);
         setWelcomeMessage(role);
         refreshDashboard();
+
+        // Auto-refresh demo requests every 5 seconds (badge update without table reload)
+        setInterval(() => {
+            const inDemo = currentSection === 'demo-requests';
+            fetchDemoRequests({ silent: true, updateTable: inDemo, preserveOpen: true });
+        }, 5000);
 
         // Logout Handler
         document.getElementById('logoutBtn').addEventListener('click', () => {
@@ -86,8 +93,13 @@ const API_URL = 'http://127.0.0.1:8000/api';
         if (navEl) navEl.classList.add('active');
         updateHeaderSection(id);
 
-        if (id === 'demo-requests' && demoRequests.length === 0) {
-            fetchDemoRequests();
+        if (id === 'demo-requests') {
+            if (demoRequests.length === 0) {
+                fetchDemoRequests({ updateTable: true, preserveOpen: false });
+            } else {
+                renderDemoRequestsTable(demoRequests, getOpenDemoRequestIds());
+                markDemoRequestsSeen();
+            }
         }
     }
 
@@ -143,7 +155,7 @@ const API_URL = 'http://127.0.0.1:8000/api';
             fetchStats(),
             fetchStudents(),
             fetchTeachers(),
-            fetchDemoRequests(),
+            fetchDemoRequests({ silent: true, updateTable: currentSection === 'demo-requests', preserveOpen: true }),
             minDelay
         ]);
 
@@ -266,9 +278,18 @@ const API_URL = 'http://127.0.0.1:8000/api';
         renderTeachersTable(latestTeachers);
     }
 
-    async function fetchDemoRequests() {
+    function getOpenDemoRequestIds() {
         const tbody = document.getElementById('demoRequestsTableBody');
-        if (tbody) {
+        if (!tbody) return [];
+        return Array.from(tbody.querySelectorAll('.demo-details-row.is-open'))
+            .map(row => row.dataset.id)
+            .filter(Boolean);
+    }
+
+    async function fetchDemoRequests(options) {
+        const { silent = false, updateTable = true, preserveOpen = false } = options || {};
+        const tbody = document.getElementById('demoRequestsTableBody');
+        if (tbody && updateTable && !silent) {
             tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:15px;">Loading demo requests...</td></tr>';
         }
 
@@ -281,16 +302,25 @@ const API_URL = 'http://127.0.0.1:8000/api';
         }
         const data = await res.json();
         demoRequests = Array.isArray(data) ? data : [];
-        renderDemoRequestsTable(demoRequests);
+        updateDemoCount();
+        if (updateTable && tbody) {
+            const openIds = preserveOpen ? getOpenDemoRequestIds() : [];
+            renderDemoRequestsTable(demoRequests, openIds);
+        }
+
+        if (currentSection === 'demo-requests') {
+            markDemoRequestsSeen();
+        }
     }
 
-    function renderDemoRequestsTable(requests) {
+    function renderDemoRequestsTable(requests, openIds) {
         const tbody = document.getElementById('demoRequestsTableBody');
         if (!tbody) return;
         if (requests.length === 0) {
             tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:15px;">No demo requests found.</td></tr>';
             return;
         }
+        const openSet = new Set((openIds || []).map(String));
 
         const escapeHtml = (value) => {
             return String(value ?? '-')
@@ -308,8 +338,10 @@ const API_URL = 'http://127.0.0.1:8000/api';
             return d.toLocaleString();
         };
 
-        tbody.innerHTML = requests.map((req) => `
-            <tr class="demo-row" data-id="${req.id}">
+        tbody.innerHTML = requests.map((req) => {
+            const isOpen = openSet.has(String(req.id));
+            return `
+            <tr class="demo-row${isOpen ? ' is-open' : ''}" data-id="${req.id}">
                 <td><span class="cell-truncate" title="${escapeHtml(req.full_name)}">${escapeHtml(req.full_name)}</span></td>
                 <td class="email-cell"><span class="cell-truncate" title="${escapeHtml(req.email)}">${escapeHtml(req.email)}</span></td>
                 <td><span class="cell-truncate" title="${escapeHtml(req.phone)}">${escapeHtml(req.phone)}</span></td>
@@ -320,7 +352,7 @@ const API_URL = 'http://127.0.0.1:8000/api';
                 <td class="message-cell"><span class="cell-wrap" title="${escapeHtml(req.message)}">${escapeHtml(req.message)}</span></td>
                 <td><span class="cell-truncate" title="${escapeHtml(formatDate(req.created_at))}">${escapeHtml(formatDate(req.created_at))}</span></td>
             </tr>
-            <tr class="demo-details-row" data-id="${req.id}">
+            <tr class="demo-details-row${isOpen ? ' is-open' : ''}" data-id="${req.id}">
                 <td colspan="9" class="demo-details-cell">
                     <div class="demo-details">
                         <div class="detail-item">
@@ -365,7 +397,8 @@ const API_URL = 'http://127.0.0.1:8000/api';
                     </div>
                 </td>
             </tr>
-        `).join('');
+        `;
+        }).join('');
 
         if (!tbody.dataset.demoToggleBound) {
             tbody.dataset.demoToggleBound = "true";
@@ -406,7 +439,36 @@ const API_URL = 'http://127.0.0.1:8000/api';
         }
 
         demoRequests = demoRequests.filter(req => String(req.id) !== String(id));
+        const seen = Math.min(getDemoSeenCount(), demoRequests.length);
+        setDemoSeenCount(seen);
+        updateDemoCount();
         renderDemoRequestsTable(demoRequests);
+    }
+
+    function getDemoSeenCount() {
+        const value = Number(localStorage.getItem(DEMO_SEEN_KEY));
+        return Number.isFinite(value) ? value : 0;
+    }
+
+    function setDemoSeenCount(value) {
+        localStorage.setItem(DEMO_SEEN_KEY, String(value));
+    }
+
+    function markDemoRequestsSeen() {
+        setDemoSeenCount(demoRequests.length);
+        updateDemoCount(0);
+    }
+
+    function updateDemoCount(forcedCount) {
+        const badge = document.getElementById('demoCount');
+        if (!badge) return;
+        const seen = getDemoSeenCount();
+        const unseen = Math.max(0, demoRequests.length - Math.min(seen, demoRequests.length));
+        const count = typeof forcedCount === 'number' ? forcedCount : unseen;
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'inline-flex' : 'none';
+        badge.classList.toggle('has-count', count > 0);
+        badge.classList.toggle('pulse', count > 0);
     }
 
     function renderTeachersTable(teachers) {

@@ -10,7 +10,8 @@ use App\Http\Controllers\RequestDemoController; // for demo request form
 // Route::post('/register', [AuthController::class, 'register']);
 // Route::post('/login', [AuthController::class, 'login']);
 
-Route::post('/request-demo',[RequestDemoController::class, 'store']);
+Route::post('/request-demo',[RequestDemoController::class, 'store']); // to store request demo
+Route::get('/admin/request-demo',[AdminController::class, 'getRequestDemo']); // to nofity request demo to admin    
 
 // Protected Routes (assuming you use Sanctum auth middleware)
 Route::middleware(['auth:sanctum'])->group(function () {

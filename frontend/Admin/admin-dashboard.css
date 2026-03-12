@@ -201,7 +201,7 @@ body {
     color: white;
 }
 .nav-item {
-    display: block;
+    display: flex;
     padding: 15px 20px;
     margin-bottom: 10px;
     border-radius: 12px;
@@ -210,6 +210,9 @@ body {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
 }
 .nav-item:hover {
     background: #7d9c9c6b;
@@ -220,6 +223,37 @@ body {
     background: #f7ececae;
     color: #1F5A62;
     font-weight: 600;
+}
+.nav-badge {
+    margin-left: auto;
+    background: #e6f3f7;
+    color: #1f5a62;
+    border: 1px solid rgba(31, 90, 98, 0.2);
+    font-size: 0.72rem;
+    font-weight: 700;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 6px 14px rgba(31, 90, 98, 0.16);
+    flex-shrink: 0;
+}
+.nav-badge.has-count {
+    background: #2c666e;
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 8px 18px rgba(31, 90, 98, 0.28);
+}
+.nav-badge.pulse {
+    animation: badgePulse 1.6s ease-in-out infinite;
+}
+@keyframes badgePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
 }
 
 .main-content { 

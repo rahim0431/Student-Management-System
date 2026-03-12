@@ -37,7 +37,11 @@
             <a class="nav-item active" data-section="dashboard" onclick="showSection('dashboard', this)"><i class="fi fi-ss-home" style="color: white; margin-right: 15px;"></i>Dashboard</a>
             <a class="nav-item" data-section="students" onclick="showSection('students', this)"><i class="fi fi-ss-graduation-cap" style="color: white; margin-right: 15px;"></i>Manage Students</a>
             <a class="nav-item" data-section="teachers" onclick="showSection('teachers', this)"><i class="fi fi-ss-chalkboard-user" style="color: white; margin-right: 15px;"></i>Manage Teachers</a>
-            <a class="nav-item" data-section="demo-requests" onclick="showSection('demo-requests', this)"><i class="fi fi-ss-document-signed" style="color: white; margin-right: 15px;"></i>Demo Requests</a>
+            <a class="nav-item" data-section="demo-requests" onclick="showSection('demo-requests', this)">
+                <i class="fi fi-ss-document-signed" style="color: white; margin-right: 15px;"></i>
+                Demo Requests
+                <span id="demoCount" class="nav-badge">0</span>
+            </a>
         </aside>
 
         <!-- MAIN CONTENT -->

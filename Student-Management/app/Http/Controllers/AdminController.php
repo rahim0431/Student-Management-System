@@ -252,4 +252,10 @@ class AdminController extends Controller
             'teacher' => $teacher->load('user'),
         ]);
     }
+    public function getRequestDemo()
+    {
+        $requests = DB::table('request-demos')->latest()->get();
+
+        return response()->json($requests);
+    }
 }
