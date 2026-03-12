@@ -3,13 +3,15 @@ const API_URL = 'http://127.0.0.1:8000/api';
     const SECTION_TITLES = {
         dashboard: "Dashboard",
         students: "Students",
-        teachers: "Teachers"
+        teachers: "Teachers",
+        "demo-requests": "Demo Requests"
     };
     let currentSection = "dashboard";
     let latestStudents = [];
     let latestTeachers = [];
     let currentStudentPage = 1;
     let currentTeacherPage = 1;
+    let demoRequests = [];
     const ITEMS_PER_PAGE = 6;
 
     document.addEventListener("DOMContentLoaded", function(){
@@ -83,6 +85,10 @@ const API_URL = 'http://127.0.0.1:8000/api';
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
         if (navEl) navEl.classList.add('active');
         updateHeaderSection(id);
+
+        if (id === 'demo-requests' && demoRequests.length === 0) {
+            fetchDemoRequests();
+        }
     }
 
     function updateHeaderSection(sectionId) {
@@ -137,6 +143,7 @@ const API_URL = 'http://127.0.0.1:8000/api';
             fetchStats(),
             fetchStudents(),
             fetchTeachers(),
+            fetchDemoRequests(),
             minDelay
         ]);
 
@@ -257,6 +264,149 @@ const API_URL = 'http://127.0.0.1:8000/api';
         renderMiniUsers();
         renderGrowthChart();
         renderTeachersTable(latestTeachers);
+    }
+
+    async function fetchDemoRequests() {
+        const tbody = document.getElementById('demoRequestsTableBody');
+        if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:15px;">Loading demo requests...</td></tr>';
+        }
+
+        const res = await fetch(`${API_URL}/admin/demo-requests`, {
+            headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+        });
+        if (res.status === 401) {
+            handleAuthError();
+            return;
+        }
+        const data = await res.json();
+        demoRequests = Array.isArray(data) ? data : [];
+        renderDemoRequestsTable(demoRequests);
+    }
+
+    function renderDemoRequestsTable(requests) {
+        const tbody = document.getElementById('demoRequestsTableBody');
+        if (!tbody) return;
+        if (requests.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:15px;">No demo requests found.</td></tr>';
+            return;
+        }
+
+        const escapeHtml = (value) => {
+            return String(value ?? '-')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        };
+
+        const formatDate = (value) => {
+            if (!value) return '-';
+            const d = new Date(value);
+            if (Number.isNaN(d.getTime())) return value;
+            return d.toLocaleString();
+        };
+
+        tbody.innerHTML = requests.map((req) => `
+            <tr class="demo-row" data-id="${req.id}">
+                <td><span class="cell-truncate" title="${escapeHtml(req.full_name)}">${escapeHtml(req.full_name)}</span></td>
+                <td class="email-cell"><span class="cell-truncate" title="${escapeHtml(req.email)}">${escapeHtml(req.email)}</span></td>
+                <td><span class="cell-truncate" title="${escapeHtml(req.phone)}">${escapeHtml(req.phone)}</span></td>
+                <td><span class="cell-truncate" title="${escapeHtml(req.institution_name)}">${escapeHtml(req.institution_name)}</span></td>
+                <td><span class="demo-chip">${escapeHtml(req.institution_type)}</span></td>
+                <td><span class="cell-truncate" title="${escapeHtml(req.campus_size)}">${escapeHtml(req.campus_size)}</span></td>
+                <td><span class="demo-chip goal">${escapeHtml(req.primary_goal)}</span></td>
+                <td class="message-cell"><span class="cell-wrap" title="${escapeHtml(req.message)}">${escapeHtml(req.message)}</span></td>
+                <td><span class="cell-truncate" title="${escapeHtml(formatDate(req.created_at))}">${escapeHtml(formatDate(req.created_at))}</span></td>
+            </tr>
+            <tr class="demo-details-row" data-id="${req.id}">
+                <td colspan="9" class="demo-details-cell">
+                    <div class="demo-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Name</span>
+                            <span class="detail-value">${escapeHtml(req.full_name)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Email</span>
+                            <span class="detail-value">${escapeHtml(req.email)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Phone</span>
+                            <span class="detail-value">${escapeHtml(req.phone)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Institution</span>
+                            <span class="detail-value">${escapeHtml(req.institution_name)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Type</span>
+                            <span class="detail-value">${escapeHtml(req.institution_type)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Campus Size</span>
+                            <span class="detail-value">${escapeHtml(req.campus_size)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Primary Goal</span>
+                            <span class="detail-value">${escapeHtml(req.primary_goal)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Submitted</span>
+                            <span class="detail-value">${escapeHtml(formatDate(req.created_at))}</span>
+                        </div>
+                        <div class="detail-item detail-message">
+                            <span class="detail-label">Message</span>
+                            <span class="detail-value">${escapeHtml(req.message)}</span>
+                        </div>
+                        <div class="detail-actions">
+                            <button type="button" class="demo-delete-btn" data-delete-id="${req.id}">Delete Request</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+
+        if (!tbody.dataset.demoToggleBound) {
+            tbody.dataset.demoToggleBound = "true";
+            tbody.addEventListener('click', (event) => {
+                const deleteBtn = event.target.closest('.demo-delete-btn');
+                if (deleteBtn) {
+                    const deleteId = deleteBtn.dataset.deleteId;
+                    deleteDemoRequest(deleteId);
+                    return;
+                }
+
+                const row = event.target.closest('.demo-row');
+                if (!row) return;
+                const id = row.dataset.id;
+                const detailsRow = tbody.querySelector(`.demo-details-row[data-id="${id}"]`);
+                if (!detailsRow) return;
+                const isOpen = detailsRow.classList.toggle('is-open');
+                row.classList.toggle('is-open', isOpen);
+            });
+        }
+    }
+
+    async function deleteDemoRequest(id) {
+        if (!id) return;
+        if (!confirm("Delete this demo request?")) return;
+
+        const res = await fetch(`${API_URL}/admin/demo-requests/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+        });
+        if (res.status === 401) {
+            handleAuthError();
+            return;
+        }
+        if (!res.ok) {
+            alert("Failed to delete the demo request.");
+            return;
+        }
+
+        demoRequests = demoRequests.filter(req => String(req.id) !== String(id));
+        renderDemoRequestsTable(demoRequests);
     }
 
     function renderTeachersTable(teachers) {

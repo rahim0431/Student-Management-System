@@ -37,6 +37,7 @@
             <a class="nav-item active" data-section="dashboard" onclick="showSection('dashboard', this)"><i class="fi fi-ss-home" style="color: white; margin-right: 15px;"></i>Dashboard</a>
             <a class="nav-item" data-section="students" onclick="showSection('students', this)"><i class="fi fi-ss-graduation-cap" style="color: white; margin-right: 15px;"></i>Manage Students</a>
             <a class="nav-item" data-section="teachers" onclick="showSection('teachers', this)"><i class="fi fi-ss-chalkboard-user" style="color: white; margin-right: 15px;"></i>Manage Teachers</a>
+            <a class="nav-item" data-section="demo-requests" onclick="showSection('demo-requests', this)"><i class="fi fi-ss-document-signed" style="color: white; margin-right: 15px;"></i>Demo Requests</a>
         </aside>
 
         <!-- MAIN CONTENT -->
@@ -235,6 +236,37 @@
                         <!-- JS will populate this -->
                     </tbody>
                 </table>
+            </div>
+
+            <!-- DEMO REQUESTS SECTION -->
+            <div id="demo-requests" class="section">
+                <div class="action-bar">
+                    <div class="title-group">
+                        <h2 class="dashboard-title-teacher">Demo Requests</h2>
+                        <i class="fi fi-ss-document-signed section-icon"></i>
+                    </div>
+                    <button class="btn-primary" onclick="fetchDemoRequests()">Refresh</button>
+                </div>
+                <div class="wide-table-wrapper">
+                    <table class="data-table demo-requests-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Institution</th>
+                                <th>Type</th>
+                                <th>Campus Size</th>
+                                <th>Primary Goal</th>
+                                <th>Message</th>
+                                <th>Submitted</th>
+                            </tr>
+                        </thead>
+                        <tbody id="demoRequestsTableBody">
+                            <!-- JS will populate this -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </main>
     </div>

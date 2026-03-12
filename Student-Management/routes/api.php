@@ -5,8 +5,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\EnsureAdmin;
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+use App\Http\Controllers\RequestDemoController; // for demo request form
+
+// Route::post('/register', [AuthController::class, 'register']);
+// Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('/request-demo',[RequestDemoController::class, 'store']);
 
 // Protected Routes (assuming you use Sanctum auth middleware)
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -27,6 +31,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/teacher/{id}', [AdminController::class, 'updateTeacher']);
         Route::get('/teachers', [AdminController::class, 'viewTeachers']);
         Route::delete('/teacher/{id}', [AdminController::class, 'deleteTeacher']);
+
+        // DEMO REQUESTS
+        Route::get('/demo-requests', [RequestDemoController::class, 'index']);
+        Route::delete('/demo-requests/{id}', [RequestDemoController::class, 'destroy']);
 
     });
 

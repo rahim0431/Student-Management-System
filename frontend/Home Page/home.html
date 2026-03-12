@@ -200,30 +200,30 @@
                 </div>
             </section>
 
-            <section id="contact" class="contact-section">
+            <section id="request_form" class="contact-section">
                 <div class="contact-card">
                     <div class="contact-header">
                         <h2>Ready to experience Learnova?</h2>
                         <p>Tell us about your campus and we will reach out with a tailored demo.</p>
                     </div>
-                    <form class="contact-form">
+                    <form class="contact-form" id="request_form">
                         <div class="form-row">
-                            <input type="text" placeholder="Full Name" aria-label="Full Name" required>
-                            <input type="email" placeholder="Work Email" aria-label="Work Email" required>
+                            <input type="text" placeholder="Full Name" aria-label="Full Name" name="full_name" required>
+                            <input type="email" placeholder="Work Email" aria-label="Work Email" name="email" required>
                         </div>
                         <div class="form-row">
-                            <input type="text" placeholder="Phone Number" aria-label="Phone Number" required>
-                            <input type="text" placeholder="Institution Name" aria-label="Institution Name" required>
+                            <input type="text" placeholder="Phone Number" aria-label="Phone Number" name="phone" required>
+                            <input type="text" placeholder="Institution Name" aria-label="Institution Name" name="institution_name" required>
                         </div>
                         <div class="form-row">
-                            <select aria-label="Institution Type" required>
+                            <select aria-label="Institution Type" name="institution_type" required>
                                 <option value="" disabled selected>Institution Type</option>
                                 <option>School</option>
                                 <option>College</option>
                                 <option>University</option>
                                 <option>Training Institute</option>
                             </select>
-                            <select aria-label="Primary Goal" required>
+                            <select aria-label="Primary Goal" name="primary_goal" required>
                                 <option value="" disabled selected>Primary Goal</option>
                                 <option>Student Management</option>
                                 <option>Teacher Management</option>
@@ -232,9 +232,9 @@
                             </select>
                         </div>
                         <div class="form-row single">
-                            <input type="text" placeholder="Campus Size" aria-label="Campus Size">
+                            <input type="text" placeholder="Campus Size" aria-label="Campus Size" name="campus_size">
                         </div>
-                        <textarea rows="3" placeholder="Tell us what you need help with" aria-label="Message"></textarea>
+                        <textarea rows="3" placeholder="Tell us what you need help with" aria-label="Message" name="message"></textarea>
                         <button type="submit" class="contact-btn">Start with Learnova</button>
                     </form>
                 </div>
