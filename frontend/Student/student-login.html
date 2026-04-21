@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login · Sage Campus</title>
+    <!-- same Inter font for consistency -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* identical color palette as registration */
+        :root {
+            --primary-deep: #2C666E;    /* your deep teal */
+            --primary-light: #F0EDEE;    /* your soft off-white */
+            --accent-sage: #3D7B84;      
+            --text-dark: #1F2C30;         
+            --text-muted: #4F5E63;        
+            --border-light: #D6D2D4;      
+            --card-bg: #FFFFFF;
+            --success: #2E7D5E;
+            --danger: #B23B3B;
+            --warning: #B88B2F;
+            --shadow-sm: 0 8px 20px rgba(44, 102, 110, 0.08);
+            --shadow-md: 0 12px 30px rgba(44, 102, 110, 0.12);
+            --radius-card: 28px;
+            --radius-field: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--primary-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;  /* narrower for login */
+            margin: 0 auto;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            border: 1px solid rgba(240, 237, 238, 0.6);
+        }
+
+        .login-header {
+            background: var(--primary-deep);
+            color: white;
+            padding: 36px 40px 28px;
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .logo svg {
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: white;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            font-weight: 400;
+            opacity: 0.9;
+            color: #F0EDEE;
+            border-top: 2px solid rgba(240,237,238,0.2);
+            padding-top: 16px;
+            margin-top: 8px;
+        }
+
+        .login-form {
+            padding: 44px 44px 48px;
+            background: white;
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--primary-deep);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 1.5px solid var(--border-light);
+            border-radius: var(--radius-field);
+            font-size: 1rem;
+            font-weight: 500;
+            background-color: white;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-deep);
+            box-shadow: 0 0 0 4px rgba(44, 102, 110, 0.15);
+        }
+
+        .form-group input.error {
+            border-color: var(--danger);
+            background-color: #FEF6F6;
+        }
+
+        .error-message {
+            display: block;
+            color: var(--danger);
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 6px;
+            min-height: 18px;
+            padding-left: 8px;
+        }
+
+        /* remember me & forgot */
+        .form-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 0 28px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-deep);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .forgot-link {
+            color: var(--primary-deep);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .forgot-link:hover {
+            border-bottom-color: var(--primary-deep);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px 28px;
+            background: var(--primary-deep);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            margin-top: 8px;
+            box-shadow: 0 8px 22px rgba(44, 102, 110, 0.35);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-primary:hover {
+            background: #1F5057;
+            transform: translateY(-3px);
+            box-shadow: 0 16px 28px rgba(44, 102, 110, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #F0EDEE;
+        }
+
+        .form-footer p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .form-footer a {
+            color: var(--primary-deep);
+            text-decoration: none;
+            font-weight: 700;
+            border-bottom: 1.5px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .form-footer a:hover {
+            border-bottom-color: var(--primary-deep);
+        }
+
+        /* API message / status (same style as register) */
+        .api-message {
+            background: #F0EDEE;
+            border: 1px solid var(--primary-deep);
+            color: var(--text-dark);
+            padding: 14px 22px;
+            border-radius: 60px;
+            margin-bottom: 30px;
+            display: none;
+            align-items: center;
+            gap: 14px;
+            font-weight: 500;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .api-message.show {
+            display: flex;
+        }
+
+        .api-message.error {
+            background: #FFE9E9;
+            border-color: var(--danger);
+            color: #A12B2B;
+        }
+
+        .api-message svg {
+            flex-shrink: 0;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* demo hint */
+        .demo-hint {
+            background: #F0EDEE;
+            border-radius: 30px;
+            padding: 10px 16px;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            border: 1px dashed var(--primary-deep);
+        }
+
+        .demo-hint strong {
+            color: var(--primary-deep);
+        }
+
+        @media (max-width: 500px) {
+            .login-header { padding: 28px 20px; }
+            .logo h1 { font-size: 1.8rem; }
+            .login-form { padding: 32px 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo">
+                    <!-- same logo as register, keeping brand consistent -->
+                    <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                        <rect width="46" height="46" rx="12" fill="#F0EDEE" fill-opacity="0.2"/>
+                        <rect x="5" y="5" width="36" height="36" rx="10" fill="white"/>
+                        <path d="M23 15L15 19V25C15 29.42 18.58 33 23 33C27.42 33 31 29.42 31 25V19L23 15Z" fill="#2C666E" stroke="#1A444A" stroke-width="1.6" stroke-linejoin="round"/>
+                        <circle cx="23" cy="25" r="3" fill="#F0EDEE"/>
+                    </svg>
+                    <h1>Sage Campus</h1>
+                </div>
+                <p class="subtitle">Access your student dashboard</p>
+            </div>
+
+            <form id="loginForm" class="login-form" novalidate>
+                <!-- dynamic api message (login feedback) -->
+                <div id="apiMessage" class="api-message"></div>
+
+                <div class="form-group">
+                    <label for="email">Email address *</label>
+                    <input type="email" id="email" name="email" placeholder="student@sage.edu" required>
+                    <span class="error-message" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password *</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                    <span class="error-message" id="passwordError"></span>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="remember" name="remember"> 
+                        <span>Keep me signed in</span>
+                    </label>
+                    <a href="#" class="forgot-link" id="forgotPassword">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="btn-primary" id="loginBtn">
+                    <span>Log in to dashboard</span>
+                </button>
+
+                <div class="form-footer">
+                    <p>New to Sage Campus? <a href="registration.html">Create account</a></p>
+                </div>
+
+                <!-- subtle hint for demo (you can remove) -->
+                <div class="demo-hint">
+                    ⚡ <strong>Demo credentials:</strong> any email & password (min 6 chars) · API simulation active
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // DOM elements
+            const form = document.getElementById('loginForm');
+            const loginBtn = document.getElementById('loginBtn');
+            const apiMsgDiv = document.getElementById('apiMessage');
+            const forgotLink = document.getElementById('forgotPassword');
+
+            // helper UI functions
+            function clearErrors() {
+                document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
+                document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            }
+
+            function showError(fieldId, msg) {
+                const input = document.getElementById(fieldId);
+                const errSpan = document.getElementById(fieldId + 'Error');
+                if (input) input.classList.add('error');
+                if (errSpan) errSpan.textContent = msg;
+            }
+
+            function setApiMessage(text, isError = false) {
+                apiMsgDiv.innerHTML = '';
+                apiMsgDiv.className = 'api-message show' + (isError ? ' error' : '');
+                const icon = isError 
+                    ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+                    : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-linecap="round"/></svg>';
+                apiMsgDiv.innerHTML = icon + ' ' + text;
+            }
+
+            function hideApiMessage() {
+                apiMsgDiv.classList.remove('show', 'error');
+            }
+
+            function setLoading(loading) {
+                if (loading) {
+                    loginBtn.innerHTML = '<span class="spinner"></span> authenticating...';
+                    loginBtn.disabled = true;
+                } else {
+                    loginBtn.innerHTML = '<span>Log in to dashboard</span>';
+                    loginBtn.disabled = false;
+                }
+            }
+
+            // simple blur validation
+            document.querySelectorAll('input').forEach(el => {
+                el.addEventListener('blur', function() {
+                    if (this.hasAttribute('required') && !this.value.trim()) {
+                        showError(this.id, 'This field is required');
+                    } else {
+                        if (this.classList.contains('error')) {
+                            document.getElementById(this.id + 'Error').textContent = '';
+                            this.classList.remove('error');
+                        }
+                    }
+                });
+                el.addEventListener('input', function() {
+                    if (this.classList.contains('error') && this.value.trim()) {
+                        this.classList.remove('error');
+                        document.getElementById(this.id + 'Error').textContent = '';
+                    }
+                });
+            });
+
+            // forgot password demo (just a message)
+            forgotLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                setApiMessage('📧 Password reset link would be sent (demo)', false);
+                setTimeout(() => hideApiMessage(), 3000);
+            });
+
+            // main login submit with fake API (replace with real endpoint)
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                hideApiMessage();
+                clearErrors();
+
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+                const remember = document.getElementById('remember').checked;
+
+                // --- client validation ---
+                let isValid = true;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showError('email', 'Valid email required');
+                    isValid = false;
+                }
+                if (password.length < 6) {
+                    showError('password', 'Password must be at least 6 characters');
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    setApiMessage('Please check your credentials', true);
+                    return;
+                }
+
+                // start loading, simulate API call
+                setLoading(true);
+                setApiMessage('Connecting to secure gateway ...', false);
+
+                // 🔁 REPLACE THIS FAKE CALL WITH YOUR REAL API
+                // Lines ~203-225 contain the fake api simulation
+                try {
+                    // simulate network request (replace with actual fetch)
+                    const response = await fakeLoginApi({ email, password, remember });
+
+                    if (response.success) {
+                        // store session mock (you can use localStorage or token)
+                        localStorage.setItem('sage_user', JSON.stringify({
+                            email: email,
+                            name: response.data.name,
+                            token: response.data.token,
+                            loggedInAt: new Date().toISOString()
+                        }));
+
+                        setApiMessage(`✅ Welcome back, ${response.data.name}! Redirecting...`, false);
+
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html'; // or your actual dashboard
+                        }, 1500);
+                    } else {
+                        throw new Error(response.message || 'Authentication failed');
+                    }
+                } catch (error) {
+                    setApiMessage(`❌ Login error: ${error.message}`, true);
+                    setLoading(false);
+                }
+            });
+
+            // ---------- FAKE API FUNCTION (replace with real fetch) ----------
+            // Lines 225 to 245: you can delete this entire function and use real fetch inside try block
+            async function fakeLoginApi(credentials) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        // simulate 90% success, 10% failure to demonstrate error handling
+                        if (Math.random() < 0.1) {
+                            reject(new Error('Invalid credentials or server timeout'));
+                        } else {
+                            resolve({
+                                success: true,
+                                message: 'Authenticated successfully',
+                                data: {
+                                    name: credentials.email.split('@')[0], // mock name from email
+                                    token: 'jwt-' + Math.random().toString(36).substring(2),
+                                    expires: '1h'
+                                }
+                            });
+                        }
+                    }, 1400);
+                });
+            }
+
+            // optional: prefill demo hint (just for convenience)
+            // you can remove this
+            const demoEmail = document.getElementById('email');
+            demoEmail.value = 'alex.sage@demo.edu';
+            document.getElementById('password').value = 'demopass';
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learnova · Home</title>
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <div class="container">
+        <div class="home-card">
+            <div class="home-header">
+                <a href="#" class="logo">
+                    <img src="icons/graduate.gif" alt="Learnova Logo">
+                    <h1>Learnova</h1>
+                </a>
+                <div class="nav-group">
+                    <nav class="nav-links">
+                        <a href="#about">About</a>
+                        <a href="#features">Features</a>
+                        <a href="#contact">Contact</a>
+                    </nav>
+                    <a href="#signup" class="nav-cta">Sign In</a>
+                </div>
+            </div>
+
+            <section class="hero-section">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Manage your campus <span style="color: #2c666e;"> with Learnova</span></h1>
+                    <p>A unified platform for administrators, teachers, and students.</p>
+                    <p class="subtitle">Streamline your educational journey today.</p>
+                    <a href="#signup" class="hero-btn">Get Started for Free</a>                  
+                    <a href="#contact" class="hero-btn" style="margin-left: 25px;">Request Demo</a>                    
+                </div>
+                <div class="hero-scene" aria-hidden="true">
+                    <div class="sms-board">
+                        <div class="sms-topbar">
+                            <span class="sms-dot"></span>
+                            <span class="sms-title"></span>
+                            <span class="sms-action"></span>
+                        </div>
+                        <div class="sms-content">
+                            <div class="sms-student-list">
+                                <div class="sms-student">
+                                    <span class="sms-avatar"></span>
+                                    <span class="sms-line"></span>
+                                    <span class="sms-chip"></span>
+                                </div>
+                                <div class="sms-student">
+                                    <span class="sms-avatar"></span>
+                                    <span class="sms-line"></span>
+                                    <span class="sms-chip"></span>
+                                </div>
+                                <div class="sms-student">
+                                    <span class="sms-avatar"></span>
+                                    <span class="sms-line"></span>
+                                    <span class="sms-chip"></span>
+                                </div>
+                            </div>
+                            <div class="sms-metrics">
+                                <div class="sms-ring"></div>
+                                <div class="sms-bars">
+                                    <span></span><span></span><span></span><span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sms-calendar">
+                        <div class="sms-calendar-head"></div>
+                        <div class="sms-calendar-grid">
+                            <span></span><span class="active"></span><span></span><span></span>
+                            <span></span><span></span><span></span><span class="active"></span>
+                            <span></span><span></span><span></span><span></span>
+                        </div>
+                    </div>
+                    <div class="sms-idcard">
+                        <div class="sms-id-avatar"></div>
+                        <div class="sms-id-lines">
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+            <div class="home-content" id="signup">
+                <div class="section-title">
+                    <h2>Select Your Portal</h2>
+                    <p>Choose your role to access the dashboard</p>
+                </div>
+
+                <div class="role-grid">
+                    <!-- ADMIN -->
+                    <div class="role-card" id="adminCard">
+                        <div class="icon-circle">
+                            <img src="icons/personnel.gif" alt="Admin Logo">
+                        </div>
+                        <h3>Admin</h3>
+                        <p class="role-desc">Manage system & users</p>
+                        <button class="role-btn" id="adminBtn">Admin login →</button>
+                    </div>
+
+                    <!-- TEACHER -->
+                    <div class="role-card" id="teacherCard">
+                        <div class="icon-circle">
+                           <img src="icons/tutor.gif" alt="Tutor Logo">
+                        </div>
+                        <h3>Teacher</h3>
+                        <p class="role-desc">Classes & grades</p>
+                        <button class="role-btn" id="teacherBtn">Teacher login →</button>
+                    </div>
+
+                    <!-- STUDENT -->
+                    <div class="role-card" id="studentCard">
+                        <div class="icon-circle">
+                            <img src="icons/graduation.gif" alt="Learnova Logo">
+                        </div>
+                        <h3>Student</h3>
+                        <p class="role-desc">Grades & enrollment</p>
+                        <button class="role-btn" id="studentBtn">Student Access</button>
+
+                        <div class="student-options" id="studentOptions">
+                            <h3>Student Portal</h3>
+                            <div class="option-buttons">
+                                <button class="option-btn primary" id="studentLoginOption">Login</button>
+                                <button class="option-btn outline" id="studentRegisterOption">Register</button>
+                            </div>
+                            <button class="close-options" id="closeStudentOptions">← Go back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section id="features" class="features-section">
+                <div class="section-title">
+                    <h2>Built For Modern Campuses</h2>
+                    <p>Tools that keep every department aligned</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon comm">
+                            <img src="icons/books.gif" alt="Learnova Logo">
+                        </div>
+                        <h3>Student Management</h3>
+                        <p>Add, Update, and Manage student records in one centralized dashboard.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon finance">
+                            <img src="icons/documents.gif" alt="Learnova Logo">
+                        </div>
+                        <h3>Teacher Administration</h3>
+                        <p>Manage teacher Profiles, Departments, and Assignments easily.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon plan">
+                            <img src="icons/growth.gif" alt="Learnova Logo">
+                        </div>
+                        <h3>Real-time Dashboard Insights</h3>
+                        <p>View total Students, Teachers, and Activity updates instantly.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about" class="about-section">
+                <div class="about-grid">
+                    <div class="about-text">
+                        <h2>About Learnova</h2>
+                        <p>Learnova is a modern student management platform 
+                            designed for schools and colleges. 
+                            It allows administrators to manage students, teachers, 
+                            and academic records through a centralized dashboard. 
+                            The system simplifies campus operations while ensuring 
+                            secure data management.</p>
+                        <div class="about-points">
+                            <span>Role-based access for every department</span>
+                            <span>Unified student records across campuses</span>
+                            <span>Automated alerts and compliance logs</span>
+                        </div>
+                    </div>
+                    <div class="about-stats">
+                        <div class="stat-card">
+                            <h3>45%</h3>
+                            <p>Faster reporting cycles</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>3x</h3>
+                            <p>Less manual data entry</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>24/7</h3>
+                            <p>Access for staff and students</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="request_form" class="contact-section">
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <h2>Ready to experience Learnova?</h2>
+                        <p>Tell us about your campus and we will reach out with a tailored demo.</p>
+                    </div>
+                    <form class="contact-form" id="request_form">
+                        <div class="form-row">
+                            <input type="text" placeholder="Full Name" aria-label="Full Name" name="full_name" required>
+                            <input type="email" placeholder="Work Email" aria-label="Work Email" name="email" required>
+                        </div>
+                        <div class="form-row">
+                            <input type="text" placeholder="Phone Number" aria-label="Phone Number" name="phone" required>
+                            <input type="text" placeholder="Institution Name" aria-label="Institution Name" name="institution_name" required>
+                        </div>
+                        <div class="form-row">
+                            <select aria-label="Institution Type" name="institution_type" required>
+                                <option value="" disabled selected>Institution Type</option>
+                                <option>School</option>
+                                <option>College</option>
+                                <option>University</option>
+                                <option>Training Institute</option>
+                            </select>
+                            <select aria-label="Primary Goal" name="primary_goal" required>
+                                <option value="" disabled selected>Primary Goal</option>
+                                <option>Student Management</option>
+                                <option>Teacher Management</option>
+                                <option>Attendance Tracking</option>
+                                <option>Complete Campus Management</option>
+                            </select>
+                        </div>
+                        <div class="form-row single">
+                            <input type="text" placeholder="Campus Size" aria-label="Campus Size" name="campus_size">
+                        </div>
+                        <textarea rows="3" placeholder="Tell us what you need help with" aria-label="Message" name="message"></textarea>
+                        <button type="submit" class="contact-btn">Start with Learnova</button>
+                    </form>
+                </div>
+            </section>
+
+            <div class="home-footer">
+                <div style="margin-bottom: 15px;">
+                    <a href="#">Privacy Policy</a> · <a href="#">Terms of Service</a> · <a href="#">Support</a>
+                </div>
+                <span style="opacity:0.6;">© 2026 Learnova. All rights reserved.</span>
+            </div>
+        </div>
+    </div>
+    <script src="home.js"></script>
+</body>
+</html>
